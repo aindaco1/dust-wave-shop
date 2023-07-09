@@ -28,12 +28,7 @@ $layout--max-width: 1000px;
   font-size: 12px;
   font-weight: bold;
   letter-spacing: 2px;
-}
-
-#main_site {
-  @media (max-width: 479px) {
-    display: none;
-  }
+  margin-right: 1rem;
 }
 
 .products h1 {
