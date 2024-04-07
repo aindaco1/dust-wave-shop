@@ -1,0 +1,15 @@
+media: assets/images
+content:
+  - name: products
+    label: Products
+    type: collection
+    path: _products
+    fields:
+      - { name: identifier, label: Identifier, type: string }
+      - { name: name, label: Name, type: string }
+      - { name: price, label: Price, type: number }
+      - { name: image, label: Image, type: image }
+      - { name: type, label: Type, type: string }
+      - { name: event, label: Event, type: string }
+      - { name: order, label: Order, type: number }
+      - { name: body, label: Body, type: code }
