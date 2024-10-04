@@ -3,7 +3,7 @@ identifier: frights-delights-1
 name: An Evening of Frights & Delights!
 description: Ticket to Frights & Delights -- An Evening of Premieres at the Guild Cinema!
 price: 8
-image: /assets/images/frights.jpg
+image: /assets/images/frights-delights.jpg
 type: digital
 event: dustwave
 order: 0
