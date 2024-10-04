@@ -10,13 +10,18 @@ window.addEventListener('DOMContentLoaded', function(event) {
 });
 
 const addToCart = document.querySelector(".snipcart-add-item");
-const quantity = document.querySelector(".qty");
 const increment = document.querySelector(".increment");
 const decrement = document.querySelector(".decrement");
 
-quantity.addEventListener("change", () => {
-    addToCart.setAttribute("data-item-quantity", quantity.value);
-});
+var qtyInputs = document.getElementsByClassName('qty');
+
+for (var i = 0; i < qtyInputs.length; i++) {
+    qtyInputs[i].addEventListener('change', function() {
+        var button = this.parentNode.querySelector('.buy-button');
+        var qty = parseInt(this.value);
+        button.setAttribute('data-item-quantity', qty);
+    });
+}
 
 if (increment) {
     increment.addEventListener("click", () => {
