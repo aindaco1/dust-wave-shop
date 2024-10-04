@@ -10,7 +10,7 @@ window.addEventListener('DOMContentLoaded', function(event) {
 });
 
 const addToCart = document.querySelector(".snipcart-add-item");
-const quantity = document.querySelector(".quantity");
+const quantity = document.querySelector(".qty");
 const increment = document.querySelector(".increment");
 const decrement = document.querySelector(".decrement");
 
