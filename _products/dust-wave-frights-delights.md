@@ -1,12 +1,11 @@
 ---
 identifier: frights-delights-1
 name: An Evening of Frights & Delights!
+description: Ticket to Frights & Delights -- An Evening of Premieres at the Guild Cinema!
 price: 8
 image: /assets/images/frights.jpg
-type: event
+type: digital
 event: dustwave
-data-item-max-quantity: 50
-data-item-shippable: false
 order: 0
 ---
 <strong>Space Age Daydream</strong> & <strong>Dust Wave</strong> are proud to present ...

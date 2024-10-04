@@ -17,6 +17,24 @@
   </button>
 </div>
 
+{% elsif product.type == "digital" %}
+<div>
+  <label for="{{ product.identifier }}-qty">Quantity:</label>
+  <input type="number" id="{{ product.identifier }}-qty" class="qty" min="1" value="1"/>
+  <button
+    class="buy-button snipcart-add-item"
+    data-item-quantity="1"
+    data-item-id="{{ product.identifier }}"
+    data-item-name="{{ product.name }}"
+    data-item-price="{{ product.price }}"
+    data-item-image="{{ product.image }}"
+    data-item-shippable="false"
+    data-item-url="https://shop.dustwave.xyz{{ page.url }}"
+    data-item-description="{{ product.description }}">
+    Buy (${{ product.price | money_without_currency }})
+  </button>
+</div>
+
 {% else %}
 <div>
   <label for="{{ product.identifier }}-qty">Quantity:</label>

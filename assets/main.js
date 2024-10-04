@@ -17,3 +17,24 @@ window.addEventListener('DOMContentLoaded', function(event) {
         }
     })
 });
+
+const addToCart = document.querySelector(".snipcart-add-item");
+const quantity = document.querySelector(".quantity");
+const increment = document.querySelector(".increment");
+const decrement = document.querySelector(".decrement");
+
+quantity.addEventListener("change", () => {
+  addToCart.setAttribute("data-item-quantity", quantity.value);
+});
+
+increment.addEventListener("click", () => {
+  const newQuantity = (parseInt(quantity.value) || 0) + 1;
+  quantity.value = newQuantity;
+  addToCart.setAttribute("data-item-quantity", newQuantity);
+});
+
+decrement.addEventListener("click", () => {
+  const newQuantity = (parseInt(quantity.value) || 0) - 1;
+  quantity.value = newQuantity;
+  addToCart.setAttribute("data-item-quantity", newQuantity);
+});
