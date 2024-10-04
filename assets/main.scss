@@ -38,7 +38,7 @@ $layout--max-width: 1000px;
 * {
   box-sizing: border-box;
   font-family: "Inter", sans-serif;
-  font-size: $size--unit * 2;
+  // font-size: $size--unit * 2;
   color: $color--default;
 }
 
@@ -231,7 +231,7 @@ h1, h1 a {
     height: 100%;
     width: 100%;
     max-width: 400px;
-    max-height: 400px;
+    // max-height: 400px;
     background-size: cover;
     @include sm {
       &:last-child {
@@ -254,7 +254,7 @@ h1, h1 a {
   }
 
   &__description {
-    font-size: $size--unit * 2.5;
+    font-size: $size--unit * 2.5 !important;
     line-height: $size--unit * 3.5;
   }
 }
@@ -389,4 +389,12 @@ h1, h1 a {
 .snipcart-button-icon.is-secondary, .snipcart-button-icon.is-danger, .snipcart-button-secondary {
   background-color: #000000 !important;
   color: #ffffff !important;
+}
+
+.snipcart-item-line__info {
+  display: none !important;
+}
+
+.snipcart-item-line__title {
+  padding-left: 0.5em !important;
 }
