@@ -12,7 +12,6 @@ order: 0
 <br>
 <h2>🧟 Frights & Delights 😍</h2>
 <h3>An Evening of Premieres at the Guild Cinema!</h3>
-<br>
 Join us at the <strong>Guild Cinema on November 6 at 6pm</strong> for a night of Space Age Daydream + Dust Wave + friends short film big screen premieres! Featuring:
 <br><br>
 <strong>Shellfish Knish</strong>, By Camille Carlson<br><br>
