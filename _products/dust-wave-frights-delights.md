@@ -4,10 +4,11 @@ name: An Evening of Frights & Delights!
 description: Ticket to Frights & Delights -- An Evening of Premieres at the Guild Cinema!
 price: 8
 image: /assets/images/frights-delights.jpg
-type: digital
+type: sold-out
 event: dustwave
 order: 0
 ---
+<h2>ONLINE SALES ARE NOW SOLD OUT! THERE WILL BE A FEW REMAINING TICKETS AT THE DOOR!</h2>
 <strong>Space Age Daydream</strong> & <strong>Dust Wave</strong> are proud to present ...
 <br>
 <h2>🧟 Frights & Delights 😍</h2>
@@ -30,6 +31,6 @@ Also -- <strong>we're raffling off props from the films!</strong> And -- <strong
 <br><br>
 <strong>Join us for a night of Frights & Delights! 🍿🎥🎃</strong>
 <br><br>
-Tickets are <strong>$8 online and $10 at the door. Doors open at 5:30pm, show starts at 6pm.</strong>
+Tickets are <strong>SOLD OUT online and $10 at the door. Doors open at 5:30pm, show starts at 6pm.</strong>
 <br><br>
 We can't wait to see you there!

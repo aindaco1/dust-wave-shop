@@ -2,16 +2,10 @@
 <div>
   <label for="{{ product.identifier }}-qty">Quantity:</label>
   <input type="number" inputmode="numeric" id="{{ product.identifier }}-qty" class="qty" min="1" value="1" />
-  <button
-    class="buy-button snipcart-add-item"
-    data-item-quantity="1"
-    data-item-id="{{ product.identifier }}"
-    data-item-name="{{ product.name }}"
-    data-item-price="{{ product.price }}"
-    data-item-image="{{ product.image }}"
+  <button class="buy-button snipcart-add-item" data-item-quantity="1" data-item-id="{{ product.identifier }}"
+    data-item-name="{{ product.name }}" data-item-price="{{ product.price }}" data-item-image="{{ product.image }}"
     data-item-url="https://shop.dustwave.xyz{{ page.url }}"
-    data-item-description="{{ product.content | remove: '<p>' | remove: '</p>' }}"
-    data-item-custom1-name="Size"
+    data-item-description="{{ product.content | remove: '<p>' | remove: '</p>' }}" data-item-custom1-name="Size"
     data-item-custom1-options="S|M|L|XL|XXL">
     Buy (${{ product.price | money_without_currency }})
   </button>
@@ -20,38 +14,32 @@
 {% elsif product.type == "digital" %}
 <div>
   <label for="{{ product.identifier }}-qty">Quantity:</label>
-  <input type="number" inputmode="numeric" id="{{ product.identifier }}-qty" class="qty" min="1" value="1"/>
-  <button
-    class="buy-button snipcart-add-item"
-    data-item-quantity="1"
-    data-item-id="{{ product.identifier }}"
-    data-item-name="{{ product.name }}"
-    data-item-price="{{ product.price }}"
-    data-item-image="{{ product.image }}"
-    data-item-shippable="false"
-    data-item-url="https://shop.dustwave.xyz{{ page.url }}"
+  <input type="number" inputmode="numeric" id="{{ product.identifier }}-qty" class="qty" min="1" value="1" />
+  <button class="buy-button snipcart-add-item" data-item-quantity="1" data-item-id="{{ product.identifier }}"
+    data-item-name="{{ product.name }}" data-item-price="{{ product.price }}" data-item-image="{{ product.image }}"
+    data-item-shippable="false" data-item-url="https://shop.dustwave.xyz{{ page.url }}"
     data-item-description="{{ product.description }}">
     Buy (${{ product.price | money_without_currency }})
   </button>
+</div>
+
+{% elsif product.type == "sold-out" %}
+<div>
+  <p><strong>SOLD OUT ONLINE, FEW TICKETS REMAINING AT THE DOOR!</strong></p>
 </div>
 
 {% else %}
 <div>
   <label for="{{ product.identifier }}-qty">Quantity:</label>
   <input type="number" inputmode="numeric" id="{{ product.identifier }}-qty" class="qty" min="1" value="1" />
-  <button
-    class="buy-button snipcart-add-item"
-    data-item-quantity="1"
-    data-item-id="{{ product.identifier }}"
-    data-item-name="{{ product.name }}"
-    data-item-price="{{ product.price }}"
-    data-item-image="{{ product.image }}"
+  <button class="buy-button snipcart-add-item" data-item-quantity="1" data-item-id="{{ product.identifier }}"
+    data-item-name="{{ product.name }}" data-item-price="{{ product.price }}" data-item-image="{{ product.image }}"
     data-item-url="https://shop.dustwave.xyz{{ page.url }}"
     data-item-description="{{ product.content | remove: '<p>' | remove: '</p>' }}">
     Buy (${{ product.price | money_without_currency }})
   </button>
 </div>
-  
+
 {% endif %}
 
 <!-- 
