@@ -6,7 +6,7 @@ price: 8
 image: /assets/images/frights-delights.jpg
 type: sold-out
 event: dustwave
-order: 0
+order: 1
 ---
 <h2>ONLINE SALES ARE NOW SOLD OUT! THERE WILL BE A FEW REMAINING TICKETS AT THE DOOR!</h2>
 <strong>Space Age Daydream</strong> & <strong>Dust Wave</strong> are proud to present ...
