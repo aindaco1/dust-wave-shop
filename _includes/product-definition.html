@@ -6,7 +6,7 @@
     data-item-name="{{ product.name }}" data-item-price="{{ product.price }}" data-item-image="{{ product.image }}"
     data-item-url="https://shop.dustwave.xyz{{ page.url }}"
     data-item-description="{{ product.content | remove: '<p>' | remove: '</p>' }}" data-item-custom1-name="Size"
-    data-item-custom1-options="S|M|L|XL|XXL">
+    data-item-custom1-options="XS|S|M|L|XL|2XL|3XL">
     Buy (${{ product.price | money_without_currency }})
   </button>
 </div>
