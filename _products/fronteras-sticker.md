@@ -1,5 +1,5 @@
 ---
-identifier: bumper
+identifier: sticker-2
 name: Fronteras TV Sticker
 price: 3
 image: /assets/images/fronteras-sticker.png
