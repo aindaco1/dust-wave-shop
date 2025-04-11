@@ -12,7 +12,7 @@ order: 1
 <br>
 <h2>🐴 Horse vs. Vamp! 🧛</h2>
 <h3>A Benefit Event for Horseheads + Breakups Suck</h3>
-Join us at <strong>Black Cat (3011 Monte Vista Blvd. NE) on May 3rd at 6:30pm</strong> for an evening where we settle the ultimate grudge match between two filmmaker warriors! Featuring:
+Join us at the <strong>Black Cat (3011 Monte Vista Blvd. NE) on May 3rd at 6:30pm</strong> for an evening where we settle the ultimate grudge match between two filmmaker warriors! Featuring:
 <br><br>
 <a href="https://www.instagram.com/noahboatproductions" target="_blank"><strong>Noah Tucker</strong></a>, director of the upcoming short film <a href="https://www.instagram.com/horseheadsfilm" target="_blank">Horseheads</a>
 <br><br><br>
