@@ -6,7 +6,7 @@ price: 10
 image: /assets/images/trainspotting-guild.png
 type: digital
 event: dustwave
-order: 2
+order: 1
 ---
 <strong>Dust Wave</strong> presents ...
 <br>
