@@ -1,6 +1,6 @@
 ---
 identifier: giallo-1
-name: Giallo Disco at Ren's Den!
+name: GIALLO DISCO at Ren's Den!
 description: Italo Disco party at Ren's Den!
 price: 10
 image: /assets/images/giallo.jpg
