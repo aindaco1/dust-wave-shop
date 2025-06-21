@@ -6,7 +6,7 @@ price: 10
 image: /assets/images/raiders-guild.jpg
 type: digital
 event: dustwave
-order: 2
+order: 1
 ---
 <strong>Dust Wave</strong> presents ...
 <br>
