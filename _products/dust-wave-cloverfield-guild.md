@@ -12,7 +12,7 @@ order: 2
 <br>
 <h2>🦎 Cloverfield 🗽</h2>
 <h3>Screening at the Guild Cinema!</h3>
-Join us at <strong>the Guild Cinema (3405 Central Ave NE) on August 1st at 10:30pm</strong> for a screening of the 2008 found-footage monster movie classic, <a href="https://www.imdb.com/title/tt0082971" target="_blank"><strong><i>Cloverfield!</i></strong></a>
+Join us at <strong>the Guild Cinema (3405 Central Ave NE) on August 1st at 10:30pm</strong> for a screening of the 2008 found-footage monster movie classic, <a href="https://www.imdb.com/title/tt1060277" target="_blank"><strong><i>Cloverfield!</i></strong></a>
 <br><br>
 Also, a Dust Wave short film right before! And a merch giveaway too! 🎥 🎉
 <br><br>
