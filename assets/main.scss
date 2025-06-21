@@ -416,3 +416,26 @@ h1, h1 a {
 .variant-select {
   font-size: medium;
 }
+
+/* Target only the custom input inside the mini-cart */
+.snipcart-item-custom-fields .snipcart-input {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  font-weight: bold !important;
+  color: #222 !important;
+  pointer-events: none !important; /* Prevent editing */
+  outline: none !important;
+  padding: 0 !important;
+  min-width: 0 !important;
+  width: auto !important;
+}
+
+.snipcart-item-custom-fields .snipcart-input input {
+  padding-left: 0;
+}
+
+.snipcart-item-line__info p {
+  font-weight: 600;
+  font-family: Montserrat, sans-serif;
+}

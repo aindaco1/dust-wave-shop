@@ -5,7 +5,9 @@
   <button class="buy-button snipcart-add-item" data-item-quantity="1" data-item-id="{{ product.identifier }}"
     data-item-name="{{ product.name }}" data-item-price="{{ product.price }}" data-item-image="{{ product.image }}"
     data-item-url="https://shop.dustwave.xyz{{ page.url }}"
-    data-item-description="{{ product.content | remove: '<p>' | remove: '</p>' }}" data-item-custom1-name="Size"
+    data-item-description="{{ product.content | remove: '<p>' | remove: '</p>' }}" 
+    data-item-custom1-value=""
+    data-item-custom1-name="Size"
     data-item-custom1-options="XS|S|M|L|XL|2XL|3XL">
     Buy ($
       {%- if product.variants -%}
@@ -48,6 +50,8 @@
     data-item-image="{{ product.image }}"
     data-item-shippable="false"
     data-item-url="https://shop.dustwave.xyz{{ page.url }}"
+    data-item-custom1-name="{% if product.variants %}Type{% endif %}"
+    data-item-custom1-value="{% if product.variants %}{{ product.variants[0].name }}{% else %}{% endif %}"
     data-item-description="{{ product.description }}"
     id="add-to-cart-{{ forloop.index0 }}">
     Buy ($
@@ -95,6 +99,8 @@
     data-item-price="{% if product.variants %}{{ product.variants[0].price }}{% else %}{{ product.price }}{% endif %}"
     data-item-image="{{ product.image }}"
     data-item-url="https://shop.dustwave.xyz{{ page.url }}"
+    data-item-custom1-name="{% if product.variants %}Type{% endif %}"
+    data-item-custom1-value="{% if product.variants %}{{ product.variants[0].name }}{% else %}{% endif %}"
     data-item-description="{{ product.content | remove: '<p>' | remove: '</p>' }}"
     id="add-to-cart-{{ forloop.index0 }}">
     Buy ($
