@@ -3,7 +3,7 @@ identifier: al1ce-1
 name: AL1CE at Juno Brewery!
 description: Concert at Juno Brewery!
 price: 20
-image: /assets/images/al1ce.jpg
+image: /assets/images/al1ce.png
 type: digital
 event: dustwave
 order: 4
