@@ -13,10 +13,10 @@ variants:
     price: 40
     sku: dancewave-eb2
   - name: Standard Ticket
-    price: 50
+    price: 35
     sku: dancewave-st1
   - name: 2 Standard Tickets
-    price: 75
+    price: 60
     sku: dancewave-st2
 order: 3
 ---
