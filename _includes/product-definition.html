@@ -1,77 +1,121 @@
+{% comment %}
+Drop-in product-definition.html (safe variant handling)
+- Stable ID: data-item-id="{{ product.identifier }}"
+- Unique, crawlable URL per product: data-item-url="https://shop.dustwave.xyz/?pid={{ product.identifier }}"
+- Variant pricing via option modifiers: [+(variant.price - base)]
+- Robust guards so we never call 'sort' on a string or blank
+{% endcomment %}
+
+{%- assign variants = product.variants -%}
+{%- assign has_variants = variants and variants != '' and variants.size > 0 -%}
+
 {% if product.type == "shirt" %}
 <div>
   <label for="{{ product.identifier }}-qty">Quantity:</label>
   <input type="number" inputmode="numeric" id="{{ product.identifier }}-qty" class="qty" min="1" value="1" />
-  <button class="buy-button snipcart-add-item" data-item-quantity="1" data-item-id="{{ product.identifier }}"
-    data-item-name="{{ product.name }}" data-item-price="{{ product.price }}" data-item-image="{{ product.image }}"
-    data-item-url="https://shop.dustwave.xyz{{ page.url }}"
-    data-item-description="{{ product.content | remove: '<p>' | remove: '</p>' }}" 
-    data-item-custom1-value=""
+
+  <button
+    class="buy-button snipcart-add-item"
+    data-item-quantity="1"
+    data-item-id="{{ product.identifier }}"
+    data-item-name="{{ product.name }}"
+    data-item-price="{{ product.price | plus: 0 }}"
+    data-item-image="{{ product.image }}"
+    data-item-url="{{ '/?pid=' | append: product.identifier | absolute_url }}"
+    data-item-description="{{ product.content | remove: '<p>' | remove: '</p>' }}"
     data-item-custom1-name="Size"
-    data-item-custom1-options="XS|S|M|L|XL|2XL|3XL">
+    data-item-custom1-options="XS|S|M|L|XL|2XL|3XL"
+    id="add-to-cart-{{ product.identifier }}">
     Buy ($
-      {%- if product.variants -%}
-        {%- assign p = product.variants[0].price | plus: 0 -%}
-        {%- if p == p | round -%}
-          {{ p | round }}
-        {%- else -%}
-          {{ p | round: 2 }}
-        {%- endif -%}
-      {%- else -%}
-        {%- assign p = product.price | plus: 0 -%}
-        {%- if p == p | round -%}
-          {{ p | round }}
-        {%- else -%}
-          {{ p | round: 2 }}
-        {%- endif -%}
-      {%- endif -%}
+      {%- assign p = product.price | plus: 0 -%}
+      {%- if p == p | round -%}{{ p | round }}{%- else -%}{{ p | round: 2 }}{%- endif -%}
     )
   </button>
+
+  <noscript>
+    <button
+      class="snipcart-add-item"
+      data-item-id="{{ product.identifier }}"
+      data-item-name="{{ product.name }}"
+      data-item-price="{{ product.price | plus: 0 }}"
+      data-item-image="{{ product.image }}"
+      data-item-url="{{ '/?pid=' | append: product.identifier | absolute_url }}"
+      data-item-custom1-name="Size"
+      data-item-custom1-options="XS|S|M|L|XL|2XL|3XL"
+      data-item-custom1-value="M">
+      Add to cart
+    </button>
+  </noscript>
 </div>
 
 {% elsif product.type == "digital" %}
 <div>
-  {% if product.variants %}
-    <select class="variant-select" id="variant-{{ forloop.index0 }}">
-      {% for variant in product.variants %}
-        <option value="{{ variant.sku }}" data-price="{{ variant.price }}">
-          {{ variant.name }} - ${% assign p = variant.price | plus: 0 %}{% if p == p | round %}{{ p | round }}{% else %}{{ p | round: 2 }}{% endif %}
+  {% if has_variants %}
+    {%- assign variants_sorted = variants | sort: 'price' -%}
+    {%- assign first_variant = variants_sorted | first -%}
+    {%- assign base = first_variant.price | plus: 0 -%}
+
+    {%- capture options_str -%}
+      {%- for v in variants_sorted -%}
+        {%- assign vprice = v.price | plus: 0 -%}
+        {%- assign delta = vprice | minus: base -%}
+        {%- if forloop.first == false -%}|{%- endif -%}
+        {%- if delta == 0 -%}{{- v.name -}}{%- else -%}{{- v.name -}}[+{{- delta -}}]{%- endif -%}
+      {%- endfor -%}
+    {%- endcapture -%}
+
+    <label for="variant-{{ product.identifier }}">Choose an option:</label>
+    <select class="variant-select" id="variant-{{ product.identifier }}">
+      {%- for v in variants_sorted -%}
+        {%- assign vprice = v.price | plus: 0 -%}
+        {%- assign mod = vprice | minus: base -%}
+        <option value="{{ v.name }}" data-mod="{{ mod }}" data-price="{{ vprice }}">
+          {{ v.name }} - $
+          {%- if vprice == vprice | round -%}{{ vprice | round }}{%- else -%}{{ vprice | round: 2 }}{%- endif -%}
         </option>
-      {% endfor %}
+      {%- endfor -%}
     </select><br><br>
+
+    <label for="{{ product.identifier }}-qty">Quantity:</label>
+    <input type="number" inputmode="numeric" id="{{ product.identifier }}-qty" class="qty" min="1" value="1" />
+
+    <button
+      class="buy-button snipcart-add-item"
+      data-item-quantity="1"
+      data-item-id="{{ product.identifier }}"
+      data-item-name="{{ product.name }}"
+      data-item-price="{{ base }}"
+      data-item-image="{{ product.image }}"
+      data-item-shippable="false"
+      data-item-url="{{ '/?pid=' | append: product.identifier | absolute_url }}"
+      data-item-custom1-name="Type"
+      data-item-custom1-options="{{ options_str | strip }}"
+      data-item-custom1-value="{{ first_variant.name }}"
+      data-item-description="{{ product.description }}"
+      id="add-to-cart-{{ product.identifier }}">
+      Buy ($
+        {%- assign p = base -%}
+        {%- if p == p | round -%}{{ p | round }}{%- else -%}{{ p | round: 2 }}{%- endif -%}
+      )
+    </button>
+
+    <noscript>
+      <button
+        class="snipcart-add-item"
+        data-item-id="{{ product.identifier }}"
+        data-item-name="{{ product.name }}"
+        data-item-price="{{ base }}"
+        data-item-image="{{ product.image }}"
+        data-item-url="{{ '/?pid=' | append: product.identifier | absolute_url }}"
+        data-item-custom1-name="Type"
+        data-item-custom1-options="{{ options_str | strip }}"
+        data-item-custom1-value="{{ first_variant.name }}">
+        Add to cart
+      </button>
+    </noscript>
+  {% else %}
+    <p><em>No options available.</em></p>
   {% endif %}
-  <label for="{{ product.identifier }}-qty">Quantity:</label>
-  <input type="number" inputmode="numeric" id="{{ product.identifier }}-qty" class="qty" min="1" value="1" />
-  <button class="buy-button snipcart-add-item"
-    data-item-quantity="1"
-    data-item-id="{% if product.variants %}{{ product.variants[0].sku }}{% else %}{{ product.identifier }}{% endif %}"
-    data-item-name="{{ product.name }}"
-    data-item-price="{% if product.variants %}{{ product.variants[0].price }}{% else %}{{ product.price }}{% endif %}"
-    data-item-image="{{ product.image }}"
-    data-item-shippable="false"
-    data-item-url="https://shop.dustwave.xyz{{ page.url }}"
-    data-item-custom1-name="{% if product.variants %}Type{% endif %}"
-    data-item-custom1-value="{% if product.variants %}{{ product.variants[0].name }}{% else %}{% endif %}"
-    data-item-description="{{ product.description }}"
-    id="add-to-cart-{{ forloop.index0 }}">
-    Buy ($
-      {%- if product.variants -%}
-        {%- assign p = product.variants[0].price | plus: 0 -%}
-        {%- if p == p | round -%}
-          {{ p | round }}
-        {%- else -%}
-          {{ p | round: 2 }}
-        {%- endif -%}
-      {%- else -%}
-        {%- assign p = product.price | plus: 0 -%}
-        {%- if p == p | round -%}
-          {{ p | round }}
-        {%- else -%}
-          {{ p | round: 2 }}
-        {%- endif -%}
-      {%- endif -%}
-    )
-  </button>
 </div>
 
 {% elsif product.type == "sold-out" %}
@@ -81,62 +125,72 @@
 
 {% else %}
 <div>
-  {% if product.variants %}
-    <select class="variant-select" id="variant-{{ forloop.index0 }}">
-      {% for variant in product.variants %}
-        <option value="{{ variant.sku }}" data-price="{{ variant.price }}">
-          {{ variant.name }} - ${% assign p = variant.price | plus: 0 %}{% if p == p | round %}{{ p | round }}{% else %}{{ p | round: 2 }}{% endif %}
+  {% if has_variants %}
+    {%- assign variants_sorted = variants | sort: 'price' -%}
+    {%- assign first_variant = variants_sorted | first -%}
+    {%- assign base = first_variant.price | plus: 0 -%}
+
+    {%- capture options_str -%}
+      {%- for v in variants_sorted -%}
+        {%- assign vprice = v.price | plus: 0 -%}
+        {%- assign delta = vprice | minus: base -%}
+        {%- if forloop.first == false -%}|{%- endif -%}
+        {%- if delta == 0 -%}{{- v.name -}}{%- else -%}{{- v.name -}}[+{{- delta -}}]{%- endif -%}
+      {%- endfor -%}
+    {%- endcapture -%}
+
+    <label for="variant-{{ product.identifier }}">Choose an option:</label>
+    <select class="variant-select" id="variant-{{ product.identifier }}">
+      {%- for v in variants_sorted -%}
+        {%- assign vprice = v.price | plus: 0 -%}
+        {%- assign mod = vprice | minus: base -%}
+        <option value="{{ v.name }}" data-mod="{{ mod }}" data-price="{{ vprice }}">
+          {{ v.name }} - $
+          {%- if vprice == vprice | round -%}{{ vprice | round }}{%- else -%}{{ vprice | round: 2 }}{%- endif -%}
         </option>
-      {% endfor %}
+      {%- endfor -%}
     </select><br><br>
   {% endif %}
+
   <label for="{{ product.identifier }}-qty">Quantity:</label>
   <input type="number" inputmode="numeric" id="{{ product.identifier }}-qty" class="qty" min="1" value="1" />
-  <button class="buy-button snipcart-add-item"
+
+  <button
+    class="buy-button snipcart-add-item"
     data-item-quantity="1"
-    data-item-id="{% if product.variants %}{{ product.variants[0].sku }}{% else %}{{ product.identifier }}{% endif %}"
+    data-item-id="{{ product.identifier }}"
     data-item-name="{{ product.name }}"
-    data-item-price="{% if product.variants %}{{ product.variants[0].price }}{% else %}{{ product.price }}{% endif %}"
+    data-item-price="{% if has_variants %}{{ base }}{% else %}{{ product.price | plus: 0 }}{% endif %}"
     data-item-image="{{ product.image }}"
-    data-item-url="https://shop.dustwave.xyz{{ page.url }}"
-    data-item-custom1-name="{% if product.variants %}Type{% endif %}"
-    data-item-custom1-value="{% if product.variants %}{{ product.variants[0].name }}{% else %}{% endif %}"
+    data-item-url="{{ '/?pid=' | append: product.identifier | absolute_url }}"
+    {% if has_variants %}
+      data-item-custom1-name="Type"
+      data-item-custom1-options="{{ options_str | strip }}"
+      data-item-custom1-value="{{ first_variant.name }}"
+    {% endif %}
     data-item-description="{{ product.content | remove: '<p>' | remove: '</p>' }}"
-    id="add-to-cart-{{ forloop.index0 }}">
+    id="add-to-cart-{{ product.identifier }}">
     Buy ($
-      {%- if product.variants -%}
-        {%- assign p = product.variants[0].price | plus: 0 -%}
-        {%- if p == p | round -%}
-          {{ p | round }}
-        {%- else -%}
-          {{ p | round: 2 }}
-        {%- endif -%}
-      {%- else -%}
-        {%- assign p = product.price | plus: 0 -%}
-        {%- if p == p | round -%}
-          {{ p | round }}
-        {%- else -%}
-          {{ p | round: 2 }}
-        {%- endif -%}
-      {%- endif -%}
+      {%- assign p = has_variants ? base : product.price | plus: 0 -%}
+      {%- if p == p | round -%}{{ p | round }}{%- else -%}{{ p | round: 2 }}{%- endif -%}
     )
   </button>
+
+  <noscript>
+    <button
+      class="snipcart-add-item"
+      data-item-id="{{ product.identifier }}"
+      data-item-name="{{ product.name }}"
+      data-item-price="{% if has_variants %}{{ base }}{% else %}{{ product.price | plus: 0 }}{% endif %}"
+      data-item-image="{{ product.image }}"
+      data-item-url="{{ '/?pid=' | append: product.identifier | absolute_url }}"
+      {% if has_variants %}
+        data-item-custom1-name="Type"
+        data-item-custom1-options="{{ options_str | strip }}"
+        data-item-custom1-value="{{ first_variant.name }}"
+      {% endif %}>
+      Add to cart
+    </button>
+  </noscript>
 </div>
-
 {% endif %}
-
-<!-- 
-{% if product.file_guid %}
-<button
-  class="buy-button snipcart-add-item"
-  data-item-id="{{ product.identifier }}-DIGITAL"
-  data-item-file-guid="{{ product.file_guid }}"
-  data-item-name="{{ product.name}} - Digital copy (JPG)"
-  data-item-price="{{ product.price | minus: 20 }}"
-  data-item-image="{{ product.image }}"
-  data-item-url="https://demo.snipcart.com{{ page.url }}"
-  data-item-description="{{ product.content | remove: '<p>' | remove: '</p>' }}">
-  Buy digital copy (JPG) (${{ product.price | minus: 20 }})
-</button>
-{% endif %}
- -->
