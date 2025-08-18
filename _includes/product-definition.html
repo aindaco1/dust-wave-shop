@@ -1,15 +1,9 @@
-{% comment %}
-Drop-in product-definition.html (safe variant handling)
-- Stable ID: data-item-id="{{ product.identifier }}"
-- Unique, crawlable URL per product: data-item-url="https://shop.dustwave.xyz/?pid={{ product.identifier }}"
-- Variant pricing via option modifiers: [+(variant.price - base)]
-- Robust guards so we never call 'sort' on a string or blank
-{% endcomment %}
-
 {%- assign variants = product.variants -%}
 {%- assign has_variants = variants and variants != '' and variants.size > 0 -%}
+{%- assign product_url = '/?pid=' | append: product.identifier | absolute_url -%}
+{%- assign desc_text = product.description | default: product.content | replace: '<p>', '' | replace: '</p>', '' -%}
 
-{% if product.type == "shirt" %}
+{%- if product.type == "shirt" %}
 <div>
   <label for="{{ product.identifier }}-qty">Quantity:</label>
   <input type="number" inputmode="numeric" id="{{ product.identifier }}-qty" class="qty" min="1" value="1" />
@@ -21,8 +15,8 @@ Drop-in product-definition.html (safe variant handling)
     data-item-name="{{ product.name }}"
     data-item-price="{{ product.price | plus: 0 }}"
     data-item-image="{{ product.image }}"
-    data-item-url="{{ '/?pid=' | append: product.identifier | absolute_url }}"
-    data-item-description="{{ product.content | remove: '<p>' | remove: '</p>' }}"
+    data-item-url="{{ product_url }}"{{ ' ' }}
+    data-item-description="{{ desc_text }}"
     data-item-custom1-name="Size"
     data-item-custom1-options="XS|S|M|L|XL|2XL|3XL"
     id="add-to-cart-{{ product.identifier }}">
@@ -39,7 +33,7 @@ Drop-in product-definition.html (safe variant handling)
       data-item-name="{{ product.name }}"
       data-item-price="{{ product.price | plus: 0 }}"
       data-item-image="{{ product.image }}"
-      data-item-url="{{ '/?pid=' | append: product.identifier | absolute_url }}"
+      data-item-url="{{ product_url }}"{{ ' ' }}
       data-item-custom1-name="Size"
       data-item-custom1-options="XS|S|M|L|XL|2XL|3XL"
       data-item-custom1-value="M">
@@ -48,9 +42,9 @@ Drop-in product-definition.html (safe variant handling)
   </noscript>
 </div>
 
-{% elsif product.type == "digital" %}
+{%- elsif product.type == "digital" %}
 <div>
-  {% if has_variants %}
+  {%- if has_variants -%}
     {%- assign variants_sorted = variants | sort: 'price' -%}
     {%- assign first_variant = variants_sorted | first -%}
     {%- assign base = first_variant.price | plus: 0 -%}
@@ -87,11 +81,11 @@ Drop-in product-definition.html (safe variant handling)
       data-item-price="{{ base }}"
       data-item-image="{{ product.image }}"
       data-item-shippable="false"
-      data-item-url="{{ '/?pid=' | append: product.identifier | absolute_url }}"
+      data-item-url="{{ product_url }}"{{ ' ' }}
       data-item-custom1-name="Type"
       data-item-custom1-options="{{ options_str | strip }}"
       data-item-custom1-value="{{ first_variant.name }}"
-      data-item-description="{{ product.description }}"
+      data-item-description="{{ desc_text }}"
       id="add-to-cart-{{ product.identifier }}">
       Buy ($
         {%- assign p = base -%}
@@ -106,26 +100,57 @@ Drop-in product-definition.html (safe variant handling)
         data-item-name="{{ product.name }}"
         data-item-price="{{ base }}"
         data-item-image="{{ product.image }}"
-        data-item-url="{{ '/?pid=' | append: product.identifier | absolute_url }}"
+        data-item-url="{{ product_url }}"{{ ' ' }}
         data-item-custom1-name="Type"
         data-item-custom1-options="{{ options_str | strip }}"
         data-item-custom1-value="{{ first_variant.name }}">
         Add to cart
       </button>
     </noscript>
-  {% else %}
-    <p><em>No options available.</em></p>
-  {% endif %}
+
+  {%- else -%}
+    <label for="{{ product.identifier }}-qty">Quantity:</label>
+    <input type="number" inputmode="numeric" id="{{ product.identifier }}-qty" class="qty" min="1" value="1" />
+
+    <button
+      class="buy-button snipcart-add-item"
+      data-item-quantity="1"
+      data-item-id="{{ product.identifier }}"
+      data-item-name="{{ product.name }}"
+      data-item-price="{{ product.price | plus: 0 }}"
+      data-item-image="{{ product.image }}"
+      data-item-shippable="false"
+      data-item-url="{{ product_url }}"{{ ' ' }}
+      data-item-description="{{ desc_text }}"
+      id="add-to-cart-{{ product.identifier }}">
+      Buy ($
+        {%- assign p = product.price | plus: 0 -%}
+        {%- if p == p | round -%}{{ p | round }}{%- else -%}{{ p | round: 2 }}{%- endif -%}
+      )
+    </button>
+
+    <noscript>
+      <button
+        class="snipcart-add-item"
+        data-item-id="{{ product.identifier }}"
+        data-item-name="{{ product.name }}"
+        data-item-price="{{ product.price | plus: 0 }}"
+        data-item-image="{{ product.image }}"
+        data-item-url="{{ product_url }}"{{ ' ' }}>
+        Add to cart
+      </button>
+    </noscript>
+  {%- endif -%}
 </div>
 
-{% elsif product.type == "sold-out" %}
+{%- elsif product.type == "sold-out" %}
 <div>
   <p><strong>SOLD OUT ONLINE, FEW TICKETS REMAINING AT THE DOOR!</strong></p>
 </div>
 
-{% else %}
+{%- else %}
 <div>
-  {% if has_variants %}
+  {%- if has_variants -%}
     {%- assign variants_sorted = variants | sort: 'price' -%}
     {%- assign first_variant = variants_sorted | first -%}
     {%- assign base = first_variant.price | plus: 0 -%}
@@ -150,28 +175,35 @@ Drop-in product-definition.html (safe variant handling)
         </option>
       {%- endfor -%}
     </select><br><br>
-  {% endif %}
+  {%- endif -%}
 
   <label for="{{ product.identifier }}-qty">Quantity:</label>
   <input type="number" inputmode="numeric" id="{{ product.identifier }}-qty" class="qty" min="1" value="1" />
+
+  {%- assign effective = has_variants -%}
+  {%- if has_variants -%}
+    {%- assign effective = base -%}
+  {%- else -%}
+    {%- assign effective = product.price | plus: 0 -%}
+  {%- endif -%}
 
   <button
     class="buy-button snipcart-add-item"
     data-item-quantity="1"
     data-item-id="{{ product.identifier }}"
     data-item-name="{{ product.name }}"
-    data-item-price="{% if has_variants %}{{ base }}{% else %}{{ product.price | plus: 0 }}{% endif %}"
+    data-item-price="{{ effective }}"
     data-item-image="{{ product.image }}"
-    data-item-url="{{ '/?pid=' | append: product.identifier | absolute_url }}"
-    {% if has_variants %}
+    data-item-url="{{ product_url }}"{{ ' ' }}
+    {%- if has_variants -%}
       data-item-custom1-name="Type"
       data-item-custom1-options="{{ options_str | strip }}"
       data-item-custom1-value="{{ first_variant.name }}"
-    {% endif %}
-    data-item-description="{{ product.content | remove: '<p>' | remove: '</p>' }}"
+    {%- endif -%}
+    data-item-description="{{ desc_text }}"
     id="add-to-cart-{{ product.identifier }}">
     Buy ($
-      {%- assign p = has_variants ? base : product.price | plus: 0 -%}
+      {%- assign p = effective -%}
       {%- if p == p | round -%}{{ p | round }}{%- else -%}{{ p | round: 2 }}{%- endif -%}
     )
   </button>
@@ -181,16 +213,16 @@ Drop-in product-definition.html (safe variant handling)
       class="snipcart-add-item"
       data-item-id="{{ product.identifier }}"
       data-item-name="{{ product.name }}"
-      data-item-price="{% if has_variants %}{{ base }}{% else %}{{ product.price | plus: 0 }}{% endif %}"
+      data-item-price="{{ effective }}"
       data-item-image="{{ product.image }}"
-      data-item-url="{{ '/?pid=' | append: product.identifier | absolute_url }}"
-      {% if has_variants %}
+      data-item-url="{{ product_url }}"{{ ' ' }}
+      {%- if has_variants -%}
         data-item-custom1-name="Type"
         data-item-custom1-options="{{ options_str | strip }}"
         data-item-custom1-value="{{ first_variant.name }}"
-      {% endif %}>
+      {%- endif -%}>
       Add to cart
     </button>
   </noscript>
 </div>
-{% endif %}
+{%- endif -%}
