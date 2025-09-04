@@ -6,12 +6,6 @@ image: /assets/images/dancewave.png
 type: digital
 event: dustwave
 variants:
-  - name: Early Bird Ticket
-    price: 25
-    sku: dancewave-eb1
-  - name: 2 Early Bird Tickets
-    price: 40
-    sku: dancewave-eb2
   - name: Standard Ticket
     price: 35
     sku: dancewave-st1
