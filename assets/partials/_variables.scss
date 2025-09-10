@@ -1,0 +1,51 @@
+$color--default: #3a3a3a;
+$color--light: lighten($color--default, 65%);
+$color--primary: #000000;
+$color--secondary: #5a5a5a;
+$color--background: #f8faff;
+$size--unit: 8px;
+$layout--max-width: 1000px;
+
+// Spacing / radii
+$radius--sm: 3px;
+$radius--md: $size--unit; // 8px
+
+// Typography scale
+$h1--size: $size--unit * 7;
+$product-title--size: $size--unit * 5;
+$body-copy--size: $size--unit * 2.5; // was 2.5 * unit
+$body-copy--leading: $size--unit * 3.5;
+
+// Layout
+$product-block-gap: $size--unit * 12;
+$product-image--max-width: 400px;
+$container-vpad: $size--unit * 4;
+$header--mb: $size--unit * 6;
+$logo--max-height: 4rem;
+
+// Borders / shadows
+$header-border-color: $color--light;
+$shadow--soft: 0px 0px 10px transparentize($color--default, 0.8);
+
+// Buttons
+$btn--font-size: 12px;
+$btn--letter-spacing: 2px;
+$btn--pad-y: $size--unit * 2;
+$btn--pad-x: $size--unit * 3;
+$btn--border-darken: 3%;
+$login--pad-y: 8px;
+$login--pad-x: 24px;
+
+// Inputs
+$qty--width: 45px;
+$mobile-input--font-size: 16px;
+
+// “Go back” banner
+$goback--bg: #888f91;
+$goback--accent: #f6e770;
+$goback--border: darken($goback--bg, 5%);
+$goback--shadow: 0px 3px 16px $goback--border;
+
+// Snipcart accents
+$snipcart--accent: #000000;
+$snipcart--contrast: #ffffff;

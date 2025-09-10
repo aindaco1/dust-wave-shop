@@ -55,3 +55,7 @@ collections:
 
 livereload: true
 open_url: true
+
+sass:
+  sass_dir: assets        # tells Jekyll where to resolve @import from
+  style: compressed       # (optional)

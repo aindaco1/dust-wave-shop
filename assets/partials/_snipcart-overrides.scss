@@ -1,0 +1,42 @@
+// ---------------------------------------------------------------------------
+// Snipcart overrides
+// ---------------------------------------------------------------------------
+
+.snipcart-layout__header { min-height: 80px; }
+
+.snipcart {
+  &-cart-header__icon {
+    @include important-color($snipcart--accent);
+  }
+
+  &-cart-header {
+    .snipcart-modal__close-icon {
+      @include important-color($snipcart--accent);
+    }
+  }
+
+  &-summary-fees__discounts-icon {
+    @include important-color($snipcart--accent);
+  }
+
+  &-button-primary {
+    @include important-bg($snipcart--accent);
+  }
+
+  &-discount-box__button:hover,
+  &-item-quantity__quantity:hover,
+  &-form__select:hover {
+    @include important-border-color($snipcart--accent);
+  }
+
+  &-button-icon.is-secondary,
+  &-button-icon.is-danger,
+  &-button-secondary {
+    @include important-bg($snipcart--accent);
+    @include important-color($snipcart--contrast);
+  }
+
+  &-item-line__media { padding-right: 0.5em !important; }
+  &-button-icon     { @include icon-gap-left(0.5em); }
+  &-summary-fees    { margin-top: 1em !important; }
+}

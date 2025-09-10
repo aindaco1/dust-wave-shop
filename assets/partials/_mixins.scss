@@ -1,0 +1,134 @@
+// ---------------------------------------------------------------------------
+// Breakpoints
+// ---------------------------------------------------------------------------
+// xsm: phones / narrow viewports (kept exact threshold)
+@mixin xsm {
+  @media (max-width: 724px) {
+    @content;
+  }
+}
+
+// sm: "container or below" — matches layout max width
+@mixin sm {
+  @media (max-width: #{$layout--max-width}) {
+    @content;
+  }
+}
+
+// ms: "container or above" — desktop-ish width and larger
+@mixin ms {
+  @media (min-width: #{$layout--max-width}) {
+    @content;
+  }
+}
+
+
+// ---------------------------------------------------------------------------
+// Layout helpers
+// ---------------------------------------------------------------------------
+// Constrain to layout width, center, and add responsive gutters on small screens
+@mixin fit-to-layout-and-center {
+  width: 100%;
+  max-width: $layout--max-width;
+  margin-left: auto;
+  margin-right: auto;
+
+  // Preserve original behavior: add inner padding only under `sm`
+  @include sm {
+    padding-left: $size--unit * 3;
+    padding-right: $size--unit * 3;
+  }
+}
+
+
+// ---------------------------------------------------------------------------
+// Typography
+// ---------------------------------------------------------------------------
+// Headline typeface
+@mixin heading-font {
+  font-family: "gambado-sans", sans-serif;
+}
+
+
+// ---------------------------------------------------------------------------
+// Buttons
+// ---------------------------------------------------------------------------
+// Core button skin
+@mixin btn-core($bg) {
+  all: unset;
+  color: #fff;
+  background-color: $bg;
+  border: 1px solid darken($bg, $btn--border-darken);
+  text-shadow: 2px 2px 5px darken($bg, $btn--border-darken);
+  border-radius: $radius--sm;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: $btn--font-size;
+  letter-spacing: $btn--letter-spacing;
+}
+
+// Split padding to allow reuse across different button shapes
+@mixin btn-padding($py, $px) {
+  padding: $py;
+  padding-left: $px;
+  padding-right: $px;
+}
+
+// Hover/press treatment with soft glow overlay
+@mixin button-hover($color) {
+  position: relative;
+  z-index: 2;
+
+  &:hover {
+    transition: 0.2s all;
+    background-color: darken($color, 10%);
+
+    &:before {
+      transform: scale(1.1, 1.5);
+    }
+  }
+
+  &:before {
+    content: " ";
+    position: absolute;
+    background-color: $color;
+    top: 0;
+    left: 0;
+    border-radius: 4px;
+    width: 100%;
+    height: 100%;
+    opacity: 0.4;
+    z-index: -1;
+    transform: scale(1);
+    transition: all 0.3s cubic-bezier(0.16, 0.8, 0.66, 1.54);
+  }
+}
+
+
+// ---------------------------------------------------------------------------
+// Media / Frames
+// ---------------------------------------------------------------------------
+// Product/media frame used in product list
+@mixin product-image-frame {
+  flex: 1;
+  height: 100%;
+  width: 100%;
+  max-width: $product-image--max-width;
+  background-size: cover;
+  border-radius: $radius--md;
+}
+
+
+// ---------------------------------------------------------------------------
+// Icon spacing helpers
+// ---------------------------------------------------------------------------
+@mixin icon-gap-left($gap)  { margin-left:  $gap !important; }
+@mixin icon-gap-right($gap) { margin-right: $gap !important; }
+
+
+// ---------------------------------------------------------------------------
+// Utility: “important” helpers (used by Snipcart overrides)
+// ---------------------------------------------------------------------------
+@mixin important-color($color)        { color:            $color !important; }
+@mixin important-bg($color)           { background-color: $color !important; }
+@mixin important-border-color($color) { border-color:     $color !important; }
