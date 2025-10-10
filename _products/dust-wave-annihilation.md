@@ -16,6 +16,6 @@ Join us at <strong>the Guild Cinema (3405 Central Ave NE) on December 12th at 10
 <br><br>
 Also, a Dust Wave short film right before! And a merch giveaway too! 🎥 🎉
 <br><br>
-<strong>Doors open at 10:00pm, show starts at 10:30pm. </strong>
+<strong>Doors open at 10:00pm, show starts at 10:30pm. All tickets are will call at the door.</strong>
 <br><br>
 <strong><i>See you there!</i></strong>
