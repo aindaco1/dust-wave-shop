@@ -6,7 +6,7 @@ price: 35
 image: /assets/images/calendar-2026.png
 type: mug
 event: dustwave
-order: 0
+order: 1
 ---
 <strong>Dust Wave</strong> presents ...
 <br>

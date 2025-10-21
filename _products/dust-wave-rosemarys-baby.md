@@ -6,7 +6,7 @@ price: 10
 image: /assets/images/rosemary.jpg
 type: digital
 event: dustwave
-order: 1
+order: 2
 ---
 <strong>Dust Wave</strong> presents ...
 <br>
