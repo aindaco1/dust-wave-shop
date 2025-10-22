@@ -24,7 +24,7 @@ Join us at <strong>the Guild Cinema (3405 Central Ave NE) on November 20th at 6:
 <strong><i>Horseheads</i></strong>, By Noah Tucker<br>
 <strong><i>First Time Sexpot</i></strong>, By Rhiannon Barela<br>
 <strong><i>The Perfect Cut</i></strong>, By Felicia Masias<br>
-<strong><i>Breakups Suck</i></strong>, By Ben Arndt<br><br>
+<strong><i>Breakups Suck</i></strong>, By Ben Arndt<br>
 <i>... and more!</i>
 <br><br>
 Plus ... drumroll please ...
