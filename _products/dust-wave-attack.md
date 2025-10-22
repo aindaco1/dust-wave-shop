@@ -4,10 +4,11 @@ name: ATTACK OF THE FIFTY FOOT DUST WAVE! at the Guild Cinema
 description: Ticket to a screening of Dust Wave shorts at the Guild Cinema
 price: 0
 image: /assets/images/attack-guild.png
-type: digital
+type: sold-out
 event: dustwave
 order: 0
 ---
+<h2>ONLINE SALES START SOON!</h2>
 <strong>Dust Wave</strong> and <strong>Space Age Daydream</strong> present ...
 <br>
 <h2>🌪️ ATTACK OF THE 50 FOOT DUST WAVE! 👋</h2>
@@ -24,11 +25,11 @@ Join us at <strong>the Guild Cinema (3405 Central Ave NE) on November 20th at 6:
 <strong><i>First Time Sexpot</i></strong>, By Rhiannon Barela<br>
 <strong><i>The Perfect Cut</i></strong>, By Felicia Masias<br>
 <strong><i>Breakups Suck</i></strong>, By Ben Arndt<br><br>
-and more!
+<i>... and more!</i>
 <br><br>
 Plus ... drumroll please ...
 <br><br>
-<strong>We're auctioning off props from the films!</strong> And more surprises await!
+<strong>We're raffling off props from the films!</strong> And more surprises await!
 <br><br>
 <strong>Doors open at 6:00pm, show starts at 6:30pm. All tickets are will call at the door.</strong>
 <br><br>
