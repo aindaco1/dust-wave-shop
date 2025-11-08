@@ -1,0 +1,11 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Open: Agent Docs",
+      "command": "${command:workbench.action.quickOpen}",
+      "args": "docs/AGENTS.md",
+      "problemMatcher": []
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  // Ensure agents index & prefer these files
+  "files.watcherExclude": {
+    "**/.jekyll-cache/**": true
+  },
+
+  // 👇 Common “context files” convention used by several VS Code AIs
+  "agent.contextFiles": [
+    "docs/AGENTS.md",
+    "docs/ARCHITECTURE.md",
+    "docs/RUNBOOKS.md",
+    "docs/DECISIONS.md",
+    "docs/PLAYBOOK-QA.md",
+    "README.md"
+  ],
+
+  // If your agent supports globs or a knowledge base folder:
+  "agent.contextGlobs": [
+    "docs/**/*.md"
+  ]
+}
