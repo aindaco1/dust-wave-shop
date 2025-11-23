@@ -6,7 +6,7 @@ price: 10
 image: /assets/images/annihilation-guild.jpg
 type: digital
 event: dustwave
-order: 3
+order: 0
 ---
 <strong>Dust Wave</strong> presents ...
 <br>
