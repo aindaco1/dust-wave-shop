@@ -35,18 +35,19 @@ content:
       - name: type
         label: Product Type
         type: select
-        options: [shirt, physical, digital, sold-out, archive]
-        description: |
-          Choose what kind of product this is:
-          
-          FOR ACTIVE PRODUCTS:
-          • shirt → T-shirts with size selector (XS through 3XL)
-          • physical → Shippable items like mugs, posters, VHS tapes
-          • digital → Event tickets or downloads (add ticket options below!)
-          • sold-out → Keeps product visible but hides the Buy button
-          
-          TO REMOVE FROM SHOP:
-          • archive → ⚠️ Moves this product to "Out of Stock" folder. Save and wait ~30 seconds for it to move automatically.
+        options:
+          values:
+            - value: shirt
+              label: "Shirt (T-shirts with size selector XS-3XL)"
+            - value: physical
+              label: "Physical (Shippable items: mugs, posters, VHS, etc.)"
+            - value: digital
+              label: "Digital (Event tickets or downloads with price variants)"
+            - value: sold-out
+              label: "Sold Out (Stays on shop, buy button hidden)"
+            - value: archive
+              label: "⚠️ ARCHIVE — Moves to Out of Stock folder (save & wait 30 sec)"
+        description: "Choose what kind of product this is."
       - name: event
         label: Event
         type: string
@@ -58,16 +59,14 @@ content:
         default: 0
         description: |
           Controls position on the shop page. Lower numbers appear first.
-          
-          TIP: Use 10, 20, 30... so you can insert new products in between (e.g., use 15 to go between 10 and 20).
+          TIP: Use 10, 20, 30... so you can insert new products in between.
       - name: variants
         label: Ticket Options (digital products only)
         type: object
         list: true
         description: |
           Only fill this out for "digital" products like event tickets!
-          
-          Add different ticket tiers here (e.g., Standard Ticket $10, VIP $25, 2-Ticket Bundle $18).
+          Add different ticket tiers here (e.g., Standard Ticket $10, VIP $25).
           Leave empty for shirts and physical items.
         fields:
           - name: name
@@ -87,8 +86,7 @@ content:
         type: rich-text
         description: |
           Write what customers need to know about this product.
-          
-          EXAMPLES:
+          Examples:
           • Shirt: "100% cotton. Available in XS, S, M, L, XL, 2XL, 3XL."
           • Poster: "24\" X 36\" glossy poster. Ships in a tube."
           • Event: "Join us at [VENUE] on [DATE] at [TIME] for..."
@@ -121,14 +119,19 @@ content:
       - name: type
         label: Product Status
         type: select
-        options: [shirt, physical, digital, sold-out, unarchive]
-        description: |
-          This product is currently archived (not on the shop).
-          
-          TO RESTORE TO SHOP:
-          • unarchive → ⚠️ Moves this product back to "Products" folder. Save and wait ~30 seconds for it to move automatically.
-          
-          Otherwise, leave the type as-is to keep this product archived.
+        options:
+          values:
+            - value: shirt
+              label: "Shirt"
+            - value: physical
+              label: "Physical"
+            - value: digital
+              label: "Digital"
+            - value: sold-out
+              label: "Sold Out"
+            - value: unarchive
+              label: "⚠️ UNARCHIVE — Restore to Products folder (save & wait 30 sec)"
+        description: "To restore this product, select UNARCHIVE and save."
       - name: event
         label: Event
         type: string
