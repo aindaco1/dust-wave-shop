@@ -1,7 +1,7 @@
 {%- assign variants = product.variants -%}
 {%- assign has_variants = variants and variants != '' and variants.size > 0 -%}
 {%- assign product_url = '/?pid=' | append: product.identifier | absolute_url -%}
-{%- assign desc_text = product.description | default: product.content | replace: '<p>', '' | replace: '</p>', '' -%}
+{%- assign desc_text = product.description | default: product.content | strip_html | strip -%}
 
 {%- if product.type == "shirt" %}
 <div>

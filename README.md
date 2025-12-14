@@ -7,5 +7,7 @@ Architecture, runbooks & QA: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), [`d
 
 ## Get going locally
 
-`gem install`  
-`bundle exec jekyll serve`
+```bash
+bundle install
+bundle exec jekyll serve --livereload --open-url
+```

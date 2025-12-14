@@ -1,0 +1,63 @@
+<script>
+  window.SnipcartSettings = {
+    publicApiKey: "{{ include.api_key }}",
+    loadStrategy: "on-user-interaction",
+    version: "3.7.4"
+  };
+
+  // Auto-select United States as default country when checkout loads
+  document.addEventListener('snipcart.ready', function() {
+    function selectUSCountry() {
+      // Find country field by its label
+      var labels = document.querySelectorAll('#snipcart label');
+      var countryLabel = null;
+      labels.forEach(function(lbl) {
+        if (lbl.textContent.toLowerCase().includes('country')) {
+          countryLabel = lbl;
+        }
+      });
+      
+      if (!countryLabel) return false;
+      
+      var formField = countryLabel.closest('.snipcart-form__field');
+      if (!formField) return false;
+      
+      var input = formField.querySelector('input');
+      if (!input) return false;
+      
+      // Skip if US already selected
+      if (formField.textContent.includes('United States')) return true;
+      
+      // Type "United States" to trigger typeahead (skip focus to avoid aria-hidden warning)
+      input.value = 'United States';
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+      
+      // Click the US option when dropdown appears
+      setTimeout(function() {
+        var options = document.querySelectorAll('#snipcart .snipcart-typeahead__suggestion, #snipcart li[role="option"]');
+        for (var i = 0; i < options.length; i++) {
+          if (options[i].textContent.trim() === 'United States') {
+            options[i].click();
+            return;
+          }
+        }
+      }, 300);
+      
+      return true;
+    }
+    
+    // Trigger on checkout/billing route
+    Snipcart.events.on('theme.routechanged', function(routesChange) {
+      if (routesChange.to && (routesChange.to.indexOf('checkout') !== -1 || routesChange.to.indexOf('billing') !== -1)) {
+        setTimeout(function() {
+          if (!selectUSCountry()) {
+            setTimeout(selectUSCountry, 500);
+          }
+        }, 300);
+      }
+    });
+  });
+
+  (function(){var c,d;(d=(c=window.SnipcartSettings).version)!=null||(c.version="3.0");var s,S;(S=(s=window.SnipcartSettings).timeoutDuration)!=null||(s.timeoutDuration=2750);var l,p;(p=(l=window.SnipcartSettings).domain)!=null||(l.domain="cdn.snipcart.com");var w,u;(u=(w=window.SnipcartSettings).protocol)!=null||(w.protocol="https");var f=window.SnipcartSettings.version.includes("v3.0.0-ci")||window.SnipcartSettings.version!="3.0"&&window.SnipcartSettings.version.localeCompare("3.4.0",void 0,{numeric:!0,sensitivity:"base"})===-1,m=["focus","mouseover","touchmove","scroll","keydown"];window.LoadSnipcart=o;document.readyState==="loading"?document.addEventListener("DOMContentLoaded",a):a();function a(){window.SnipcartSettings.loadStrategy?window.SnipcartSettings.loadStrategy==="on-user-interaction"&&(m.forEach(function(t){return document.addEventListener(t,o)}),setTimeout(o,window.SnipcartSettings.timeoutDuration)):o()}var n=!1;function o(){if(n)return;n=!0;let t=document.getElementsByTagName("head")[0],e=document.querySelector("#snipcart"),i=document.querySelector('src[src^="'.concat(window.SnipcartSettings.protocol,"://").concat(window.SnipcartSettings.domain,'"][src$="snipcart.js"]')),r=document.querySelector('link[href^="'.concat(window.SnipcartSettings.protocol,"://").concat(window.SnipcartSettings.domain,'"][href$="snipcart.css"]'));e||(e=document.createElement("div"),e.id="snipcart",e.setAttribute("hidden","true"),document.body.appendChild(e)),v(e),i||(i=document.createElement("script"),i.src="".concat(window.SnipcartSettings.protocol,"://").concat(window.SnipcartSettings.domain,"/themes/v").concat(window.SnipcartSettings.version,"/default/snipcart.js"),i.async=!0,t.appendChild(i)),!f&&!r&&(r=document.createElement("link"),r.rel="stylesheet",r.type="text/css",r.href="".concat(window.SnipcartSettings.protocol,"://").concat(window.SnipcartSettings.domain,"/themes/v").concat(window.SnipcartSettings.version,"/default/snipcart.css"),t.prepend(r)),m.forEach(function(g){return document.removeEventListener(g,o)})}function v(t){!window.SnipcartSettings.publicApiKey&&console.error("Snipcart publicApiKey missing. You can get it in your merchant dashboard."),t.dataset.apiKey=window.SnipcartSettings.publicApiKey,window.SnipcartSettings.addProductBehavior&&(t.dataset.configAddProductBehavior=window.SnipcartSettings.addProductBehavior),window.SnipcartSettings.modalStyle&&(t.dataset.configModalStyle=window.SnipcartSettings.modalStyle),window.SnipcartSettings.currency&&(t.dataset.currency=window.SnipcartSettings.currency),window.SnipcartSettings.templatesUrl&&(t.dataset.templatesUrl=window.SnipcartSettings.templatesUrl)}})();
+</script>

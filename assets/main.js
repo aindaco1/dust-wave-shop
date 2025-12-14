@@ -127,44 +127,209 @@ window.addEventListener('DOMContentLoaded', function () {
   });
 
   // -------------------------------
-  // OPTIONAL: global +/- controls support (kept for parity)
+  // Snipcart checkout autocomplete fix for mobile browsers
+  // Injects proper autocomplete attributes into address/payment fields
+  // (Kept as fallback; primary fix is via snipcart-templates.html override)
   // -------------------------------
-  const increment = document.querySelector('.increment');
-  const decrement = document.querySelector('.decrement');
+  
+  // US state abbreviation to full name mapping
+  var stateAbbreviations = {
+    'AL': 'Alabama', 'AK': 'Alaska', 'AZ': 'Arizona', 'AR': 'Arkansas', 'CA': 'California',
+    'CO': 'Colorado', 'CT': 'Connecticut', 'DE': 'Delaware', 'FL': 'Florida', 'GA': 'Georgia',
+    'HI': 'Hawaii', 'ID': 'Idaho', 'IL': 'Illinois', 'IN': 'Indiana', 'IA': 'Iowa',
+    'KS': 'Kansas', 'KY': 'Kentucky', 'LA': 'Louisiana', 'ME': 'Maine', 'MD': 'Maryland',
+    'MA': 'Massachusetts', 'MI': 'Michigan', 'MN': 'Minnesota', 'MS': 'Mississippi', 'MO': 'Missouri',
+    'MT': 'Montana', 'NE': 'Nebraska', 'NV': 'Nevada', 'NH': 'New Hampshire', 'NJ': 'New Jersey',
+    'NM': 'New Mexico', 'NY': 'New York', 'NC': 'North Carolina', 'ND': 'North Dakota', 'OH': 'Ohio',
+    'OK': 'Oklahoma', 'OR': 'Oregon', 'PA': 'Pennsylvania', 'RI': 'Rhode Island', 'SC': 'South Carolina',
+    'SD': 'South Dakota', 'TN': 'Tennessee', 'TX': 'Texas', 'UT': 'Utah', 'VT': 'Vermont',
+    'VA': 'Virginia', 'WA': 'Washington', 'WV': 'West Virginia', 'WI': 'Wisconsin', 'WY': 'Wyoming',
+    'DC': 'District of Columbia', 'PR': 'Puerto Rico', 'VI': 'Virgin Islands', 'GU': 'Guam'
+  };
 
-  if (increment) {
-    increment.addEventListener('click', () => {
-      const qtyInput = document.querySelector('.qty');
-      if (!qtyInput) return;
-      const newQty = (parseInt(qtyInput.value, 10) || 0) + 1;
-      qtyInput.value = newQty;
+  function fixCheckoutAutocomplete() {
+    const snipcartEl = document.querySelector('#snipcart');
+    if (!snipcartEl) return;
+    
+    const fieldMappings = [
+      { selector: 'input[id^="name_"], [name="name"]', autocomplete: 'name' },
+      { selector: 'input[id^="email_"], [name="email"]', autocomplete: 'email' },
+      { selector: 'input[id^="address1_"], [name="address1"]', autocomplete: 'address-line1' },
+      { selector: 'input[id^="address2_"], [name="address2"]', autocomplete: 'address-line2' },
+      { selector: 'input[id^="city_"], [name="city"]', autocomplete: 'address-level2' },
+      { selector: 'input[id^="postalCode_"], [name="postalCode"]', autocomplete: 'postal-code' },
+      { selector: 'input[id^="phone_"], [name="phone"]', autocomplete: 'tel' },
+      { selector: '[name="cardNumber"], input[id^="cardNumber_"]', autocomplete: 'cc-number' },
+      { selector: '[name="expiration"], input[id^="expir"]', autocomplete: 'cc-exp' },
+      { selector: '[name="cvv"], [name="cvc"]', autocomplete: 'cc-csc' }
+    ];
 
-      const btn = findAddButtonFromChild(qtyInput);
-      if (!btn) return;
-
-      const select = getVariantSelectForChild(qtyInput);
-      const unitPrice = getEffectiveUnitPrice(btn, select);
-      btn.setAttribute('data-item-quantity', String(newQty));
-      updateButtonLabel(btn, unitPrice, newQty);
+    fieldMappings.forEach(function(mapping) {
+      snipcartEl.querySelectorAll(mapping.selector).forEach(function(input) {
+        const current = input.getAttribute('autocomplete');
+        if (!current || current === 'off' || current === 'none' || current === 'nope') {
+          input.setAttribute('autocomplete', mapping.autocomplete);
+        }
+      });
+    });
+    
+    // Enhance province/state typeahead search inputs to accept abbreviations
+    snipcartEl.querySelectorAll('.snipcart-typeahead input').forEach(function(input) {
+      if (input.dataset.stateEnhanced) return;
+      input.dataset.stateEnhanced = 'true';
+      
+      input.addEventListener('input', function(e) {
+        var val = e.target.value.toUpperCase().trim();
+        // If user types a 2-letter state abbreviation, expand it
+        if (val.length === 2 && stateAbbreviations[val]) {
+          // Small delay to let Snipcart's typeahead process first
+          setTimeout(function() {
+            // Find dropdown options and click the matching one
+            var options = snipcartEl.querySelectorAll('.snipcart-typeahead__dropdown-content li, .snipcart-dropdown__list-item');
+            options.forEach(function(opt) {
+              if (opt.textContent.trim() === stateAbbreviations[val]) {
+                opt.click();
+              }
+            });
+          }, 150);
+        }
+      });
+    });
+    
+    // Add hidden autofill proxy inputs for password managers
+    injectAutofillProxyForState(snipcartEl);
+  }
+  
+  // Inject a hidden native input that password managers can autofill
+  // Then transfer the value to Snipcart's typeahead dropdown
+  function injectAutofillProxyForState(snipcartEl) {
+    // Find form fields that contain province/state
+    var formFields = snipcartEl.querySelectorAll('.snipcart-form__field');
+    
+    formFields.forEach(function(el) {
+      // Check if this element contains a province field
+      var hasProvinceName = el.innerHTML.indexOf('province') > -1 || el.innerHTML.indexOf('Province') > -1;
+      if (!hasProvinceName) return;
+      
+      var field = el.closest('.snipcart-form__field') || el;
+      if (field.querySelector('.autofill-proxy-state')) return;
+      
+      // Create subtle but visible input for password manager autofill
+      // Proton Pass requires actually visible inputs
+      var proxy = document.createElement('input');
+      proxy.type = 'text';
+      proxy.name = 'state';
+      proxy.id = 'autofill-state-proxy';
+      proxy.className = 'autofill-proxy-state';
+      proxy.autocomplete = 'address-level1';
+      proxy.placeholder = 'State (for autofill)';
+      proxy.tabIndex = -1;
+      // Password managers require visible inputs at detection time
+      // Start visible, then hide after password manager detects it
+      proxy.style.cssText = 'display:block;width:100%;height:20px;padding:4px 8px;margin:0 0 -20px 0;border:1px solid #e0e0e0;background:#fafafa;color:#888;font-size:11px;box-sizing:border-box;border-radius:3px;';
+      
+      field.insertBefore(proxy, field.firstChild);
+      
+      // Hide after password manager has time to detect the field
+      setTimeout(function() {
+        proxy.style.cssText = 'display:block;width:1%;height:1px;padding:9px;margin:0 0 -20px 0;border:1px solid transparent;background:transparent;color:transparent;font-size:1px;box-sizing:border-box;border-radius:3px;';
+      }, 500);
+      
+      // Monitor for autofill (password managers trigger 'input' or 'change' events)
+      function handleProxyFill() {
+        var val = proxy.value.trim().toUpperCase();
+        if (!val) return;
+        
+        // Match abbreviation or full name
+        var stateName = stateAbbreviations[val] || null;
+        if (!stateName) {
+          // Check if it's already a full state name
+          for (var abbr in stateAbbreviations) {
+            if (stateAbbreviations[abbr].toUpperCase() === val) {
+              stateName = stateAbbreviations[abbr];
+              break;
+            }
+          }
+        }
+        
+        if (stateName) {
+          // Find the typeahead input and set value to trigger search
+          var typeaheadInput = field.querySelector('.snipcart-typeahead input');
+          if (typeaheadInput) {
+            typeaheadInput.value = stateName;
+            typeaheadInput.dispatchEvent(new Event('input', { bubbles: true }));
+            
+            // Wait for dropdown to populate, then click matching option
+            setTimeout(function() {
+              var options = snipcartEl.querySelectorAll('.snipcart-typeahead__dropdown-content li, .snipcart-dropdown__list-item, .snipcart-dropdown__content li');
+              options.forEach(function(opt) {
+                if (opt.textContent.trim() === stateName) {
+                  opt.click();
+                }
+              });
+            }, 200);
+          }
+        }
+        
+        // Clear proxy after processing
+        proxy.value = '';
+      }
+      
+      proxy.addEventListener('input', handleProxyFill);
+      proxy.addEventListener('change', handleProxyFill);
+      
+      // Also check periodically for autofill (some managers don't trigger events)
+      var checkInterval = setInterval(function() {
+        if (!document.body.contains(proxy)) {
+          clearInterval(checkInterval);
+          return;
+        }
+        if (proxy.value) {
+          handleProxyFill();
+        }
+      }, 500);
     });
   }
 
-  if (decrement) {
-    decrement.addEventListener('click', () => {
-      const qtyInput = document.querySelector('.qty');
-      if (!qtyInput) return;
-      const newQty = Math.max((parseInt(qtyInput.value, 10) || 0) - 1, 1);
-      qtyInput.value = newQty;
+  function setupCheckoutAutocompleteObserver() {
+    if (!window.Snipcart) return;
 
-      const btn = findAddButtonFromChild(qtyInput);
-      if (!btn) return;
-
-      const select = getVariantSelectForChild(qtyInput);
-      const unitPrice = getEffectiveUnitPrice(btn, select);
-      btn.setAttribute('data-item-quantity', String(newQty));
-      updateButtonLabel(btn, unitPrice, newQty);
+    Snipcart.events.on('theme.routechanged', function(routes) {
+      if (routes.to && (
+        routes.to.includes('checkout') ||
+        routes.to.includes('billing') ||
+        routes.to.includes('shipping') ||
+        routes.to.includes('payment')
+      )) {
+        setTimeout(fixCheckoutAutocomplete, 100);
+        setTimeout(fixCheckoutAutocomplete, 500);
+      }
     });
+
+    const checkoutObserver = new MutationObserver(function(mutations) {
+      for (const mutation of mutations) {
+        if (mutation.addedNodes.length) {
+          const hasFormField = Array.from(mutation.addedNodes).some(function(node) {
+            return node.querySelector && node.querySelector('.snipcart-form__field');
+          });
+          if (hasFormField) {
+            setTimeout(fixCheckoutAutocomplete, 50);
+          }
+        }
+      }
+    });
+
+    checkoutObserver.observe(document.body, { childList: true, subtree: true });
   }
+
+  function initSnipcartAutocomplete() {
+    if (window.Snipcart && window.Snipcart.events) {
+      setupCheckoutAutocompleteObserver();
+    } else {
+      setTimeout(initSnipcartAutocomplete, 100);
+    }
+  }
+  initSnipcartAutocomplete();
 
   // -------------------------------
   // Mini-cart: show custom fields under each item (same behavior)

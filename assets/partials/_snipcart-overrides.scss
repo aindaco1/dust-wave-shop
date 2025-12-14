@@ -40,3 +40,9 @@
   &-button-icon     { @include icon-gap-left(0.5em); }
   &-summary-fees    { margin-top: 1em !important; }
 }
+
+.snipcart-form-radio:checked + label:after {
+  left: -2px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+}
