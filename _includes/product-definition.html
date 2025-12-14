@@ -145,6 +145,40 @@
 
 {%- elsif product.type == "sold-out" %}
 
+{%- elsif product.type == "physical" %}
+<div>
+  <label for="{{ product.identifier }}-qty">Quantity:</label>
+  <input type="number" inputmode="numeric" id="{{ product.identifier }}-qty" class="qty" min="1" value="1" />
+
+  <button
+    class="buy-button snipcart-add-item"
+    data-item-quantity="1"
+    data-item-id="{{ product.identifier }}"
+    data-item-name="{{ product.name }}"
+    data-item-price="{{ product.price | plus: 0 }}"
+    data-item-image="{{ product.image }}"
+    data-item-url="{{ product_url }}"{{ ' ' }}
+    data-item-description="{{ desc_text }}"
+    id="add-to-cart-{{ product.identifier }}">
+    Buy ($
+      {%- assign p = product.price | plus: 0 -%}
+      {%- if p == p | round -%}{{ p | round }}{%- else -%}{{ p | round: 2 }}{%- endif -%}
+    )
+  </button>
+
+  <noscript>
+    <button
+      class="snipcart-add-item"
+      data-item-id="{{ product.identifier }}"
+      data-item-name="{{ product.name }}"
+      data-item-price="{{ product.price | plus: 0 }}"
+      data-item-image="{{ product.image }}"
+      data-item-url="{{ product_url }}"{{ ' ' }}>
+      Add to cart
+    </button>
+  </noscript>
+</div>
+
 {%- else %}
 <div>
   {%- if has_variants -%}

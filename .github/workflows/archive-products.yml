@@ -1,0 +1,88 @@
+name: Archive/Unarchive Products
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '_products/*.md'
+      - 'out-of-stock/*.md'
+
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Archive and unarchive products
+        id: move
+        run: |
+          moved=false
+          
+          # Function to get original type from git history
+          get_previous_type() {
+            local file="$1"
+            local previous_type
+            
+            # Get the type from the previous commit
+            previous_type=$(git show HEAD~1:"$file" 2>/dev/null | grep "^type:" | head -1 | sed 's/type: *//')
+            
+            # If no previous commit or type not found, default to physical
+            if [ -z "$previous_type" ] || [ "$previous_type" = "archive" ] || [ "$previous_type" = "unarchive" ]; then
+              echo "physical"
+            else
+              echo "$previous_type"
+            fi
+          }
+          
+          # Process products to archive
+          for file in _products/*.md; do
+            [ -f "$file" ] || continue
+            
+            if grep -q "^type: archive" "$file"; then
+              filename=$(basename "$file")
+              original_type=$(get_previous_type "$file")
+              echo "Archiving $filename (restoring type: $original_type)"
+              
+              # Restore original type
+              sed -i "s/^type: archive/type: $original_type/" "$file"
+              
+              # Move to out-of-stock
+              mv "$file" "out-of-stock/$filename"
+              moved=true
+            fi
+          done
+          
+          # Process products to unarchive
+          for file in out-of-stock/*.md; do
+            [ -f "$file" ] || continue
+            
+            if grep -q "^type: unarchive" "$file"; then
+              filename=$(basename "$file")
+              original_type=$(get_previous_type "$file")
+              echo "Unarchiving $filename (restoring type: $original_type)"
+              
+              # Restore original type
+              sed -i "s/^type: unarchive/type: $original_type/" "$file"
+              
+              # Move to _products
+              mv "$file" "_products/$filename"
+              moved=true
+            fi
+          done
+          
+          echo "moved=$moved" >> $GITHUB_OUTPUT
+
+      - name: Commit changes
+        if: steps.move.outputs.moved == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Move archived/unarchived products [automated]"
+          git push

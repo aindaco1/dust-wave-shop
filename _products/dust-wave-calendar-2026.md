@@ -4,9 +4,9 @@ name: DUST WAVE After Dark 2026 Calendar
 description: The thirstiest calendar of the year
 price: 35
 image: /assets/images/calendar-2026.png
-type: mug
+type: physical
 event: dustwave
-order: 1
+order: 10
 ---
 <strong>Dust Wave</strong> presents ...
 <br>

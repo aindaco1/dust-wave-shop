@@ -5,6 +5,6 @@ price: 20
 image: /assets/images/print.jpg
 type: print
 event: fronteras
-order: 6
+order: 120
 ---
 12" X 18" silk coverstock fine print.

@@ -1,15 +1,160 @@
-media: assets/images
+media:
+  input: assets/images
+  output: /assets/images
+
 content:
   - name: products
-    label: Products
+    label: 🛒 Products (Live on Shop)
     type: collection
     path: _products
+    filename: "{identifier}.md"
+    view:
+      fields: [name, price, type, order]
+      primary: name
+      sort: [order, name]
+      default:
+        sort: order
+        order: asc
     fields:
-      - { name: identifier, label: Identifier, type: string }
-      - { name: name, label: Name, type: string }
-      - { name: price, label: Price, type: number }
-      - { name: image, label: Image, type: image }
-      - { name: type, label: Type, type: string }
-      - { name: event, label: Event, type: string }
-      - { name: order, label: Order, type: number }
-      - { name: body, label: Body, type: code }
+      - name: identifier
+        label: Identifier
+        type: string
+        description: "A unique ID for this product (e.g., shirt-dustwave, poster-sexpot). Use lowercase letters, numbers, and dashes only. No spaces!"
+      - name: name
+        label: Product Name
+        type: string
+        description: "The name customers will see (e.g., 'DUST WAVE T-Shirt', 'First Time Sexpot Poster')."
+      - name: price
+        label: Price ($)
+        type: number
+        description: "Price in dollars. Just the number, no $ sign (e.g., 25, 35, 6)."
+      - name: image
+        label: Product Image
+        type: image
+        description: "Upload or select an image. Best size: 1000x1000px (square) or 1000x1500px (portrait). Use PNG or JPG."
+      - name: type
+        label: Product Type
+        type: select
+        options: [shirt, physical, digital, sold-out, archive]
+        description: |
+          Choose what kind of product this is:
+          
+          FOR ACTIVE PRODUCTS:
+          • shirt → T-shirts with size selector (XS through 3XL)
+          • physical → Shippable items like mugs, posters, VHS tapes
+          • digital → Event tickets or downloads (add ticket options below!)
+          • sold-out → Keeps product visible but hides the Buy button
+          
+          TO REMOVE FROM SHOP:
+          • archive → ⚠️ Moves this product to "Out of Stock" folder. Save and wait ~30 seconds for it to move automatically.
+      - name: event
+        label: Event
+        type: string
+        default: dustwave
+        hidden: true
+      - name: order
+        label: Display Order
+        type: number
+        default: 0
+        description: |
+          Controls position on the shop page. Lower numbers appear first.
+          
+          TIP: Use 10, 20, 30... so you can insert new products in between (e.g., use 15 to go between 10 and 20).
+      - name: variants
+        label: Ticket Options (digital products only)
+        type: object
+        list: true
+        description: |
+          Only fill this out for "digital" products like event tickets!
+          
+          Add different ticket tiers here (e.g., Standard Ticket $10, VIP $25, 2-Ticket Bundle $18).
+          Leave empty for shirts and physical items.
+        fields:
+          - name: name
+            label: Option Name
+            type: string
+            description: "What customers see in the dropdown (e.g., 'Standard Ticket', '2-Pack Bundle')."
+          - name: price
+            label: Price ($)
+            type: number
+            description: "Price for this option. Just the number, no $ sign."
+          - name: sku
+            label: SKU (optional)
+            type: string
+            description: "Internal tracking code (e.g., dancewave-std). Optional but helpful for records."
+      - name: body
+        label: Product Description
+        type: rich-text
+        description: |
+          Write what customers need to know about this product.
+          
+          EXAMPLES:
+          • Shirt: "100% cotton. Available in XS, S, M, L, XL, 2XL, 3XL."
+          • Poster: "24\" X 36\" glossy poster. Ships in a tube."
+          • Event: "Join us at [VENUE] on [DATE] at [TIME] for..."
+
+  - name: out-of-stock
+    label: 📦 Out of Stock (Archived)
+    type: collection
+    path: out-of-stock
+    filename: "{identifier}.md"
+    view:
+      fields: [name, type]
+      primary: name
+    fields:
+      - name: identifier
+        label: Identifier
+        type: string
+        description: "The product's unique ID. Don't change this!"
+      - name: name
+        label: Product Name
+        type: string
+        description: "The product name (keep for records)."
+      - name: price
+        label: Price ($)
+        type: number
+        description: "Original price (keep for records)."
+      - name: image
+        label: Product Image
+        type: image
+        description: "The product image (keep for records)."
+      - name: type
+        label: Product Status
+        type: select
+        options: [shirt, physical, digital, sold-out, unarchive]
+        description: |
+          This product is currently archived (not on the shop).
+          
+          TO RESTORE TO SHOP:
+          • unarchive → ⚠️ Moves this product back to "Products" folder. Save and wait ~30 seconds for it to move automatically.
+          
+          Otherwise, leave the type as-is to keep this product archived.
+      - name: event
+        label: Event
+        type: string
+        default: dustwave
+        hidden: true
+      - name: order
+        label: Display Order
+        type: number
+        default: 0
+        description: "Original display order. Keep this so the product returns to the right position when restored."
+      - name: variants
+        label: Ticket Options (keep for records)
+        type: object
+        list: true
+        description: "Original ticket options. Keep these so they're preserved if you restore this product."
+        fields:
+          - name: name
+            label: Option Name
+            type: string
+          - name: price
+            label: Price ($)
+            type: number
+          - name: sku
+            label: SKU
+            type: string
+      - name: body
+        label: Product Description
+        type: rich-text
+        description: "Original description. Keep this so it's preserved if you restore this product."

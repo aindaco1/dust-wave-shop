@@ -3,8 +3,8 @@ identifier: poster-3
 name: First Time Sexpot Poster
 price: 35
 image: /assets/images/sexpot-poster.png
-type: mug
+type: physical
 event: dustwave
-order: 5
+order: 90
 ---
 24" X 36" First Time Sexpot poster.
