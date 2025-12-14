@@ -84,12 +84,21 @@ content:
       - name: body
         label: Product Description
         type: rich-text
+        default: |
+          <strong>Dust Wave</strong> presents ...
+          <br>
+          <h2>🎬 EVENT NAME 🎬</h2>
+          <h3>At the Venue!</h3>
+          Join us at <strong>VENUE (Address) on DATE at TIME</strong> for a screening of <a href="https://www.imdb.com/title/" target="_blank"><strong><i>Movie Title!</i></strong></a>
+          <br><br>
+          Also, a Dust Wave short film right before! And a merch giveaway too! 🎥 🎉
+          <br><br>
+          <strong>Doors open at TIME, show starts at TIME. All tickets are will call at the door.</strong>
+          <br><br>
+          <strong><i>See you there!</i></strong>
         description: |
-          Write what customers need to know about this product.
-          Examples:
-          • Shirt: "100% cotton. Available in XS, S, M, L, XL, 2XL, 3XL."
-          • Poster: "24\" X 36\" glossy poster. Ships in a tube."
-          • Event: "Join us at [VENUE] on [DATE] at [TIME] for..."
+          Edit the template above! Replace the CAPS with your event details.
+          For non-events: Delete everything and write a simple description like "100% cotton. Available in XS-3XL."
 
   - name: out-of-stock
     label: 📦 Out of Stock (Archived)
