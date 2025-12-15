@@ -7,7 +7,7 @@ content:
     label: 🛒 Products (Live on Shop)
     type: collection
     path: _products
-    filename: "{identifier}.md"
+    filename: "{name}.md"
     view:
       fields: [name, price, type, order]
       primary: name
@@ -123,7 +123,7 @@ content:
     label: 📦 Out of Stock (Archived)
     type: collection
     path: out-of-stock
-    filename: "{identifier}.md"
+    filename: "{name}.md"
     view:
       fields: [name, type]
       primary: name
