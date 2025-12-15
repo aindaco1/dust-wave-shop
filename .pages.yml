@@ -31,7 +31,9 @@ content:
       - name: image
         label: Product Image
         type: image
-        description: "Upload or select an image. Best size: 1000x1000px (square) or 1000x1500px (portrait). Use PNG or JPG."
+        options:
+          path: ""
+        description: "Upload or select an image. Uploads to /assets/images/. Best size: 1000x1000px (square) or 1000x1500px (portrait). PNG or JPG."
       - name: type
         label: Product Type
         type: select
@@ -82,23 +84,40 @@ content:
             type: string
             description: "Internal tracking code (e.g., dancewave-std). Optional but helpful for records."
       - name: body
-        label: Product Description
-        type: rich-text
+        label: Product Description (HTML)
+        type: code
+        options:
+          language: html
         default: |
+          <!-- 🎬 EVENT TEMPLATE (delete if not an event) -->
           <strong>Dust Wave</strong> presents ...
           <br>
           <h2>🎬 EVENT NAME 🎬</h2>
           <h3>At the Venue!</h3>
-          Join us at <strong>VENUE (Address) on DATE at TIME</strong> for a screening of <a href="https://www.imdb.com/title/" target="_blank"><strong><i>Movie Title!</i></strong></a>
+          Join us at <strong>the Guild Cinema (3405 Central Ave NE) on December 12th at 10:30pm</strong> for a screening of <a href="https://www.imdb.com/title/tt5765804/" target="_blank"><strong><i>Annihilation!</i></strong></a>
           <br><br>
           Also, a Dust Wave short film right before! And a merch giveaway too! 🎥 🎉
           <br><br>
-          <strong>Doors open at TIME, show starts at TIME. All tickets are will call at the door.</strong>
+          <strong>Doors open at 10:00pm, show starts at 10:30pm. All tickets are will call at the door.</strong>
           <br><br>
           <strong><i>See you there!</i></strong>
+
+          <!-- 👕 SHIRT TEMPLATE (delete if not a shirt) -->
+          Get your very own DUST WAVE T-Shirt! 100% cotton. Available in XS, S, M, L, XL, 2XL, 3XL.
+
+          <!-- 📦 PHYSICAL PRODUCT TEMPLATES (delete if not applicable) -->
+          24" X 36" glossy poster. Ships in a tube.
+
+          27" X 40" poster commemorating Attack of the 50 Ft. Dust Wave!
+
+          15 oz. glossy black mug with our mark and name. Suitable for any potable liquids.
+
+          Get a 3-pack of branded latex condoms! <em>Dust Wave is not responsible for any unwanted pregnancies.</em>
+
+          The full show on the only format that matters — VHS. Includes bonus features.
         description: |
-          Edit the template above! Replace the CAPS with your event details.
-          For non-events: Delete everything and write a simple description like "100% cotton. Available in XS-3XL."
+          Delete the templates you don't need and edit the one you're using.
+          HTML tags: <strong>bold</strong>, <em>italic</em>, <br> line break, <h2>Header</h2>, <a href="URL">link</a>
 
   - name: out-of-stock
     label: 📦 Out of Stock (Archived)
@@ -124,7 +143,9 @@ content:
       - name: image
         label: Product Image
         type: image
-        description: "The product image (keep for records)."
+        options:
+          path: ""
+        description: "The product image (keep for records). Images stored in /assets/images/."
       - name: type
         label: Product Status
         type: select
@@ -167,6 +188,10 @@ content:
             label: SKU
             type: string
       - name: body
-        label: Product Description
-        type: rich-text
-        description: "Original description. Keep this so it's preserved if you restore this product."
+        label: Product Description (HTML)
+        type: code
+        options:
+          language: html
+        description: |
+          Original description (HTML). Keep this so it's preserved if you restore this product.
+          Common tags: <strong>bold</strong>, <em>italic</em>, <br>, <h2>, <a href="URL">link</a>
