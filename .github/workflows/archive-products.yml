@@ -7,6 +7,11 @@ on:
       - '_products/*.md'
       - 'out-of-stock/*.md'
 
+# Don't run concurrently with deploy
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   archive:
     runs-on: ubuntu-latest
