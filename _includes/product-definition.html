@@ -4,6 +4,11 @@
 {%- assign desc_text = product.description | default: product.content | strip_html | strip -%}
 
 {%- if product.type == "shirt" %}
+{%- if product.sizes and product.sizes.size > 0 -%}
+  {%- assign sizes = product.sizes | join: "|" -%}
+{%- else -%}
+  {%- assign sizes = "XS|S|M|L|XL|2XL|3XL" -%}
+{%- endif -%}
 <div>
   <label for="{{ product.identifier }}-qty">Quantity:</label>
   <input type="number" inputmode="numeric" id="{{ product.identifier }}-qty" class="qty" min="1" value="1" />
@@ -18,7 +23,7 @@
     data-item-url="{{ product_url }}"{{ ' ' }}
     data-item-description="{{ desc_text }}"
     data-item-custom1-name="Size"
-    data-item-custom1-options="XS|S|M|L|XL|2XL|3XL"
+    data-item-custom1-options="{{ sizes }}"
     id="add-to-cart-{{ product.identifier }}">
     Buy ($
       {%- assign p = product.price | plus: 0 -%}
@@ -35,7 +40,7 @@
       data-item-image="{{ product.image }}"
       data-item-url="{{ product_url }}"{{ ' ' }}
       data-item-custom1-name="Size"
-      data-item-custom1-options="XS|S|M|L|XL|2XL|3XL"
+      data-item-custom1-options="{{ sizes }}"
       data-item-custom1-value="M">
       Add to cart
     </button>

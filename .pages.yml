@@ -62,6 +62,14 @@ content:
         description: |
           Controls position on the shop page. Lower numbers appear first.
           TIP: Use 10, 20, 30... so you can insert new products in between.
+      - name: sizes
+        label: Sizes (shirts only)
+        type: select
+        options:
+          multiple: true
+          values: [XS, S, M, L, XL, 2XL, 3XL]
+        default: [XS, S, M, L, XL, 2XL, 3XL]
+        description: "Only for 'shirt' products! Select which sizes are available. All sizes selected by default."
       - name: variants
         label: Ticket Options (digital products only)
         type: object
@@ -172,6 +180,13 @@ content:
         type: number
         default: 0
         description: "Original display order. Keep this so the product returns to the right position when restored."
+      - name: sizes
+        label: Sizes (shirts only)
+        type: select
+        options:
+          multiple: true
+          values: [XS, S, M, L, XL, 2XL, 3XL]
+        description: "Original sizes (keep for records)."
       - name: variants
         label: Ticket Options (keep for records)
         type: object
