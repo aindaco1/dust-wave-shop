@@ -28,25 +28,41 @@
 
 ### Deployment
 - **GitHub Actions** (`deploy.yml`):
-  1. Builds Jekyll with `JEKYLL_ENV=production`
-  2. Deploys to GitHub Pages via `actions/deploy-pages`
-  3. Purges Cloudflare cache (if enabled)
+  1. Syncs `main` → `production` branch (single source of truth)
+  2. Builds Jekyll with `JEKYLL_ENV=production` from `production` branch
+  3. Deploys to GitHub Pages via `actions/deploy-pages`
+  4. Purges Cloudflare cache (if enabled)
 - **Archive Action** (`archive-products.yml`):
   - Watches for `type: archive` or `type: unarchive`
-  - Moves files between folders
-  - Restores original product type from git history
-- **Concurrency**: Both workflows use `group: "pages"` to prevent conflicts
+  - Pulls latest, moves files, restores original type from git history
+  - Triggers deploy workflow on completion
+- **Concurrency**: Deploy uses `cancel-in-progress: true` to handle rapid changes; archive queues separately
+
+### Branching Strategy
+- **`main`**: Working branch for both git users and Pages CMS
+- **`production`**: Auto-synced from `main`, used for builds (never edit directly)
+
+This prevents conflicts when multiple people edit simultaneously.
 
 ## Data Flow
 
 ```
-Pages CMS → GitHub commit → GitHub Actions
-                              ↓
-                    archive-products.yml (if type=archive/unarchive)
-                              ↓
-                         deploy.yml
-                              ↓
-                    Jekyll build → GitHub Pages → Cloudflare
+Git Users ─────┐
+               ├──→ main ──→ GitHub Actions
+Pages CMS ─────┘                   │
+                                   ├──→ archive-products.yml (if type=archive/unarchive)
+                                   │         │
+                                   │         ↓
+                                   │    Commit to main
+                                   │         │
+                                   ↓         ↓
+                              Sync main → production
+                                   │
+                                   ↓
+                             Jekyll build
+                                   │
+                                   ↓
+                            GitHub Pages → Cloudflare
 ```
 
 ## File Structure

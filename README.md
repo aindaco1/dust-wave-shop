@@ -37,9 +37,19 @@ JEKYLL_ENV=production bundle exec jekyll build
 ### Deployment
 
 Deploys automatically via GitHub Actions on push to `main`:
-1. Jekyll builds the site
-2. Deploys to GitHub Pages
-3. Purges Cloudflare cache (if enabled)
+1. Syncs `main` → `production` branch
+2. Builds Jekyll from `production`
+3. Deploys to GitHub Pages
+4. Purges Cloudflare cache (if enabled)
+
+### Branching
+
+| Branch | Purpose |
+|--------|---------|
+| `main` | Working branch — both git users and Pages CMS commit here |
+| `production` | Auto-synced from main, used for builds (never edit directly) |
+
+This prevents conflicts when multiple people edit simultaneously.
 
 ### Product Types
 
@@ -50,6 +60,7 @@ Deploys automatically via GitHub Actions on push to `main`:
 | `digital` | Event tickets with price variants |
 | `sold-out` | Visible but buy button hidden |
 | `archive` | Triggers move to out-of-stock folder |
+| `unarchive` | Triggers restore from out-of-stock folder |
 
 ### Key Files
 

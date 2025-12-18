@@ -7,9 +7,9 @@ on:
       - '_products/*.md'
       - 'out-of-stock/*.md'
 
-# Don't run concurrently with deploy
+# Queue behind deploy workflow, don't cancel
 concurrency:
-  group: "pages"
+  group: "archive"
   cancel-in-progress: false
 
 jobs:
@@ -22,7 +22,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          ref: main
+          fetch-depth: 0
+
+      - name: Pull latest changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git pull --rebase origin main
 
       - name: Archive and unarchive products
         id: move

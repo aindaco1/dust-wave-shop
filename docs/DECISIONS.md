@@ -16,3 +16,5 @@
 - 2025-12-15: Deploy via GitHub Actions (`deploy.yml`) instead of manual upload. Uses `actions/deploy-pages` with concurrency control.
 - 2025-12-15: Cloudflare cache purge added to deploy workflow (enabled via `CLOUDFLARE_ENABLED` repository variable).
 - 2025-12-15: Pages CMS select fields must use `options.values` format, not bare `options: [...]` arrays.
+- 2025-12-18: Adopt `main` → `production` branch sync pattern (from fronteras-website) to prevent conflicts between git users and Pages CMS.
+- 2025-12-18: Deploy workflow syncs main to production before build; archive workflow pulls latest before committing. Both prevent race conditions.

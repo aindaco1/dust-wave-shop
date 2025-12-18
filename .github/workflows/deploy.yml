@@ -8,21 +8,49 @@ on:
     types: [completed]
     branches: [main]
 
-# Allow only one concurrent deployment
+# Allow only one concurrent deployment, cancel in-progress runs
 concurrency:
   group: "pages"
   cancel-in-progress: true
 
 jobs:
-  build:
+  sync:
     runs-on: ubuntu-latest
     # Only run if triggered by push OR if archive workflow succeeded
     if: github.event_name == 'push' || github.event.workflow_run.conclusion == 'success'
+    permissions:
+      contents: write
     steps:
-      - name: Checkout
+      - name: Checkout main
         uses: actions/checkout@v4
         with:
           ref: main
+          fetch-depth: 0
+
+      - name: Sync main to production
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Create production branch if it doesn't exist
+          if ! git ls-remote --heads origin production | grep -q production; then
+            git checkout -b production
+            git push origin production
+          else
+            git fetch origin production:production
+            git checkout production
+            git merge --ff-only main
+            git push origin production
+          fi
+
+  build:
+    needs: sync
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout production
+        uses: actions/checkout@v4
+        with:
+          ref: production
           fetch-depth: 0
 
       - name: Setup Ruby

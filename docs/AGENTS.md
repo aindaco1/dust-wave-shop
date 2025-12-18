@@ -30,9 +30,13 @@
 - Archive/unarchive triggers GitHub Action that moves files and restores original type
 
 **GitHub Actions**
-- `deploy.yml` — Builds Jekyll, deploys to GitHub Pages, purges Cloudflare cache
-- `archive-products.yml` — Moves products between folders based on type field
-- Both use `concurrency.group: "pages"` to prevent conflicts
+- `deploy.yml` — Syncs main→production, builds Jekyll, deploys to GitHub Pages, purges Cloudflare cache
+- `archive-products.yml` — Moves products between folders based on type field, triggers deploy
+- Deploy uses `cancel-in-progress: true`; archive pulls latest before committing to avoid conflicts
+
+**Branching**
+- `main` — Working branch (git users + Pages CMS both commit here)
+- `production` — Auto-synced from main, used for builds (never edit directly)
 
 **Conventions**
 - Guard Liquid collections: `variants and variants != '' and variants.size > 0`.
