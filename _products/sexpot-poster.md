@@ -7,4 +7,4 @@ type: physical
 event: dustwave
 order: 90
 ---
-24" X 36" First Time Sexpot poster.
+18" x 24" First Time Sexpot poster.
