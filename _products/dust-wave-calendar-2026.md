@@ -1,10 +1,9 @@
 ---
 identifier: calendar-1
 name: DUST WAVE After Dark 2026 Calendar
-description: The thirstiest calendar of the year
 price: 35
 image: /assets/images/calendar-2026.png
-type: physical
+type: archive
 event: dustwave
 order: 10
 ---
