@@ -3,7 +3,7 @@ identifier: calendar-1
 name: DUST WAVE After Dark 2026 Calendar
 price: 35
 image: /assets/images/calendar-2026.png
-type: archive
+type: physical
 event: dustwave
 order: 10
 ---
