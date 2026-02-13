@@ -148,6 +148,43 @@
   {%- endif -%}
 </div>
 
+{%- elsif product.type == "ticket" %}
+{%- assign max_per_order = product.max_per_order | default: 10 | plus: 0 -%}
+<div>
+  <label for="{{ product.identifier }}-qty">Quantity:</label>
+  <input type="number" inputmode="numeric" id="{{ product.identifier }}-qty" class="qty" min="1" max="{{ max_per_order }}" value="1" />
+
+  <button
+    class="buy-button snipcart-add-item"
+    data-product-type="ticket"
+    data-item-quantity="1"
+    data-item-id="{{ product.identifier }}"
+    data-item-name="{{ product.name }}"
+    data-item-price="0"
+    data-item-image="{{ product.image }}"
+    data-item-shippable="false"
+    data-item-url="{{ product_url }}"{{ ' ' }}
+    data-item-description="{{ desc_text }}"
+    data-item-max-quantity="{{ max_per_order }}"
+    id="add-to-cart-{{ product.identifier }}">
+    RSVP (Free)
+  </button>
+
+  <noscript>
+    <button
+      class="snipcart-add-item"
+      data-item-id="{{ product.identifier }}"
+      data-item-name="{{ product.name }}"
+      data-item-price="0"
+      data-item-image="{{ product.image }}"
+      data-item-shippable="false"
+      data-item-url="{{ product_url }}"{{ ' ' }}
+      data-item-max-quantity="{{ max_per_order }}">
+      RSVP (Free)
+    </button>
+  </noscript>
+</div>
+
 {%- elsif product.type == "sold-out" %}
 
 {%- elsif product.type == "physical" %}

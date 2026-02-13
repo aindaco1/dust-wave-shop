@@ -5,6 +5,81 @@
     version: "3.7.4"
   };
 
+  // Free-order checkout: hide billing/payment and relabel for RSVP
+  document.addEventListener('snipcart.ready', function() {
+    var freeLabelsApplied = false;
+    var defaultLabels = {
+      billing: { title: 'Billing' },
+      payment: {
+        title: 'Payment',
+        continue_to_payment: 'Continue to payment',
+        place_order: 'Place order'
+      },
+      header: { title_cart_summary: 'Cart summary' },
+      cart: { summary: 'Order summary' }
+    };
+    var freeLabels = {
+      billing: { title: 'Your Information' },
+      payment: {
+        title: 'Confirm',
+        continue_to_payment: 'Confirm RSVP',
+        place_order: 'Confirm RSVP'
+      },
+      header: { title_cart_summary: 'Your RSVP' },
+      cart: { summary: 'RSVP summary' }
+    };
+
+    function isCartFree() {
+      var state = Snipcart.store.getState();
+      if (!state || !state.cart) return false;
+      var items = state.cart.items && state.cart.items.items ? state.cart.items.items : state.cart.items;
+      if (!items || !items.length) return false;
+      var total = typeof state.cart.total === 'number' ? state.cart.total : null;
+      if (total !== null) return total === 0;
+      for (var i = 0; i < items.length; i++) {
+        if ((items[i].price || items[i].unitPrice || 0) > 0) return false;
+      }
+      return true;
+    }
+
+    function applyFreeOrderMode() {
+      var el = document.querySelector('#snipcart');
+      if (!el) return;
+      var free = isCartFree();
+      if (free) {
+        el.classList.add('snipcart--free-order');
+        if (!freeLabelsApplied) {
+          Snipcart.api.session.setLanguage('en', freeLabels);
+          freeLabelsApplied = true;
+        }
+      } else {
+        el.classList.remove('snipcart--free-order');
+        if (freeLabelsApplied) {
+          Snipcart.api.session.setLanguage('en', defaultLabels);
+          freeLabelsApplied = false;
+        }
+      }
+    }
+
+    Snipcart.events.on('cart.confirmed', applyFreeOrderMode);
+    Snipcart.events.on('item.added', applyFreeOrderMode);
+    Snipcart.events.on('item.updated', applyFreeOrderMode);
+    Snipcart.events.on('item.removed', applyFreeOrderMode);
+    Snipcart.events.on('theme.routechanged', function() {
+      setTimeout(applyFreeOrderMode, 100);
+      setTimeout(applyFreeOrderMode, 500);
+    });
+
+    // Also observe DOM changes inside #snipcart to catch checkout rendering
+    var snipcartEl = document.querySelector('#snipcart');
+    if (snipcartEl) {
+      var freeOrderObserver = new MutationObserver(function() {
+        applyFreeOrderMode();
+      });
+      freeOrderObserver.observe(snipcartEl, { childList: true, subtree: true });
+    }
+  });
+
   // Auto-select United States as default country when checkout loads
   document.addEventListener('snipcart.ready', function() {
     function selectUSCountry() {

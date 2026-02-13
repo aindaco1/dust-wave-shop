@@ -41,6 +41,51 @@
   &-summary-fees    { margin-top: 1em !important; }
 }
 
+// Free-order mode: hide billing address, payment step, and pricing
+#snipcart.snipcart--free-order {
+  // Hide the billing address section (keep name/email which Snipcart requires)
+  .snipcart-billing-completed__step-icon,
+  .snipcart-billing-completed .snipcart-checkout-step__col:last-child {
+    display: none !important;
+  }
+
+  // Hide payment step chrome but keep the submit button visible
+  .snipcart-payment-form,
+  .snipcart-payment-completed,
+  .snipcart-featured-payment-methods,
+  .snipcart-cart__featured-payment-methods-container,
+  .snipcart-order__box .snipcart-payment-details {
+    display: none !important;
+  }
+
+  // Hide the step number + title header on the payment step
+  .snipcart-checkout-step:has(.snipcart-payment) > .snipcart-checkout-step__header {
+    display: none !important;
+  }
+
+  // Hide "No payment is required" notice
+  .snipcart-payment__no-payment-needed {
+    display: none !important;
+  }
+
+  // Hide total/subtotal pricing rows in cart and checkout summary
+  .snipcart-summary-fees__tax,
+  .snipcart-summary-fees__total,
+  .snipcart-summary-fees__notice {
+    display: none !important;
+  }
+
+  // Hide item prices in the cart list
+  .snipcart-item-line__price {
+    display: none !important;
+  }
+
+  // Hide the discount/promo code box
+  .snipcart-discount-box {
+    display: none !important;
+  }
+}
+
 .snipcart-form-radio:checked + label:after {
   left: -2px !important;
   top: 50% !important;

@@ -12,7 +12,15 @@ window.addEventListener('DOMContentLoaded', function () {
     return s;
   }
 
+  function isTicket(btn) {
+    return btn.getAttribute('data-product-type') === 'ticket';
+  }
+
   function updateButtonLabel(addToCartBtn, unitPrice, qty) {
+    if (isTicket(addToCartBtn)) {
+      addToCartBtn.innerHTML = 'RSVP (Free)';
+      return;
+    }
     const total = Number(unitPrice) * Number(qty || 1);
     addToCartBtn.innerHTML = 'Buy ($' + formatMoney(total) + ')';
   }
@@ -99,6 +107,11 @@ window.addEventListener('DOMContentLoaded', function () {
 
       let qty = parseInt(target.value, 10);
       if (!Number.isFinite(qty) || qty < 1) qty = 1;
+      var maxAttr = parseInt(target.max, 10);
+      if (Number.isFinite(maxAttr) && qty > maxAttr) {
+        qty = maxAttr;
+        target.value = qty;
+      }
 
       const select = getVariantSelectForChild(target);
       const unitPrice = getEffectiveUnitPrice(btn, select);
