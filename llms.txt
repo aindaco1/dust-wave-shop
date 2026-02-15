@@ -1,0 +1,18 @@
+---
+layout: none
+permalink: /llms.txt
+---
+# DUST WAVE Shop
+
+> DUST WAVE is a creative collective based in Albuquerque, NM. This is the official online shop for DUST WAVE merchandise and event tickets, powered by Snipcart.
+
+- The shop is located at [https://shop.dustwave.xyz](https://shop.dustwave.xyz)
+- DUST WAVE's main site is at [https://dustwave.xyz](https://dustwave.xyz)
+- Follow on Instagram: [@waveofdust](https://instagram.com/waveofdust)
+
+## Products
+
+{% assign sorted = site.products | sort: 'order' -%}
+{% for product in sorted -%}
+- [{{ product.name }}](https://shop.dustwave.xyz{{ product.url }}): ${{ product.price }} — {{ product.content | strip_html | strip_newlines | truncate: 120 }}
+{% endfor %}
