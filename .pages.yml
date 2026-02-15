@@ -7,7 +7,7 @@ content:
     label: 🛒 Products (Live on Shop)
     type: collection
     path: _products
-    filename: "{name}.md"
+    filename: "{fields.name}.md"
     view:
       fields: [name, price, type, order]
       primary: name
@@ -68,8 +68,7 @@ content:
         options:
           multiple: true
           values: [XS, S, M, L, XL, 2XL, 3XL]
-        default: [XS, S, M, L, XL, 2XL, 3XL]
-        description: "Only for 'shirt' products! Select which sizes are available. All sizes selected by default."
+        description: "Only for 'shirt' products! Select which sizes are available."
       - name: variants
         label: Ticket Options (digital products only)
         type: object
@@ -131,7 +130,7 @@ content:
     label: 📦 Out of Stock (Archived)
     type: collection
     path: out-of-stock
-    filename: "{name}.md"
+    filename: "{fields.name}.md"
     view:
       fields: [name, type]
       primary: name
