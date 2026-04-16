@@ -27,6 +27,6 @@ Join us at <strong>Studio 519 (519 Central Ave NW) on April 17th</strong> for a 
 <p>Come ready to enjoy a sharp, playful evening of live performance -- and <strong>bring some extra cash for bidding</strong> during the event. It’s a benefit, after all, so there will be chances to throw in a little more support while you’re there.</p>
 <br><br>
 
-<strong>Doors open at 6:30PM, show starts at 7:00PM.</strong>
+<strong>Doors open at 6:15PM, show starts at 7:00PM.</strong>
 <br><br>
 <strong><i>One night only -- come laugh, bid, and support Dust Wave.</i></strong>
