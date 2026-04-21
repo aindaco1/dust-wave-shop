@@ -1,10 +1,10 @@
 ---
 identifier: benefit-1
 name: A Dust Wave Benefit at Studio 519!
-description: Suggestions welcome. Chaos guaranteed.
 image: /assets/images/benefit.jpg
-type: digital
+type: archive
 event: dustwave
+order: 10
 variants:
   - name: Early Bird
     price: 12
@@ -12,7 +12,6 @@ variants:
   - name: Same Day
     price: 15
     sku: dancewave-sd
-order: 10
 ---
 <strong>THE FACULTY LOUNGE & FRIENDS</strong> present ...
 <br>
