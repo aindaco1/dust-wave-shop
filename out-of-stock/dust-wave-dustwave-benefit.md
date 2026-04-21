@@ -2,7 +2,7 @@
 identifier: benefit-1
 name: A Dust Wave Benefit at Studio 519!
 image: /assets/images/benefit.jpg
-type: archive
+type: digital
 event: dustwave
 order: 10
 variants:
