@@ -7,4 +7,4 @@ type: sticker
 event: dustwave
 order: 200
 ---
-Sticker from the upcoming DUST WAVE production, "Just Hang On". 4" X 4".
+Sticker from the upcoming DUST WAVE production, "Just Hang On". 5.75" X 5.75".
