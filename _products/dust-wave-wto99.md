@@ -3,11 +3,9 @@ identifier: wto99-1
 name: WTO/99 at the Dust Wave Microcinema
 price: 0
 image: /assets/images/wto99.png
-type: ticket
+type: archive
 event: dustwave
 order: 15
-max_tickets: 30
-max_per_order: 2
 ---
 <strong>Dust Wave</strong> presents ...
 <br>
