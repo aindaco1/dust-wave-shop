@@ -34,6 +34,20 @@ bundle exec jekyll serve --livereload --open-url
 JEKYLL_ENV=production bundle exec jekyll build
 ```
 
+### Product Rich Previews
+
+Live products also generate shareable preview pages at `/products/<product-file-name>/`.
+
+Example:
+
+```text
+https://shop.dustwave.xyz/products/jho-t-shirt/
+```
+
+These pages use the product front matter and body from `_products/` to render product-specific Open Graph and Twitter Card tags, then redirect browsers back to the single-page shop anchor, such as `/#t-shirt-7`.
+
+Use the `/products/.../` URL when sharing a product and expecting a rich preview. Hash-only URLs like `https://shop.dustwave.xyz/#t-shirt-7` still scroll to the product, but preview crawlers do not send fragments to the server, so they cannot receive product-specific metadata.
+
 ### Deployment
 
 Deploys automatically via GitHub Actions on push to `main`:
@@ -65,6 +79,8 @@ This prevents conflicts when multiple people edit simultaneously.
 ### Key Files
 
 - `_products/` — Product markdown files
+- `_layouts/product-preview.html` — Generated product preview pages with anchor redirect
+- `_includes/head.html` — Site/product meta tags for rich previews
 - `out-of-stock/` — Archived products
 - `_includes/product-definition.html` — Product UI template
 - `.pages.yml` — Pages CMS configuration
