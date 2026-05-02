@@ -23,7 +23,7 @@ email: noreply@dustwave.xyz
 description: >- # this means to ignore newlines until "baseurl:"
   Buy your DUST WAVE stuff!
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://shop.dustwave.xyz" # the base hostname & protocol for your site, e.g. http://example.com
 instagram_username: waveofdust
 
 # Build settings
@@ -51,7 +51,16 @@ plugins:
 #   - vendor/ruby/
 
 collections:
-  - products
+  products:
+    output: true
+    permalink: /products/:path/
+
+defaults:
+  - scope:
+      path: ""
+      type: products
+    values:
+      layout: product-preview
 
 livereload: true
 open_url: true

@@ -1,13 +1,35 @@
+{%- assign default_title = site.title | default: "DUST WAVE Shop" -%}
+{%- assign default_description = "Dust Wave's online shop" -%}
+{%- assign default_image = "/assets/icons/meta.png" -%}
+{%- assign meta_title = default_title -%}
+{%- assign meta_description = default_description -%}
+{%- assign meta_image = default_image -%}
+{%- assign og_type = "website" -%}
+
+{%- if page.collection == "products" -%}
+  {%- assign meta_title = page.name | append: " | " | append: default_title -%}
+  {%- assign meta_description = page.description | default: page.content | strip_html | strip | normalize_whitespace | truncate: 180 -%}
+  {%- assign meta_image = page.image | default: default_image -%}
+  {%- assign og_type = "product" -%}
+{%- elsif page.title -%}
+  {%- assign meta_title = page.title | append: " | " | append: default_title -%}
+  {%- assign meta_description = page.description | default: site.description | default: default_description | strip_html | strip | normalize_whitespace | truncate: 180 -%}
+  {%- assign meta_image = page.image | default: default_image -%}
+{%- endif -%}
+
+{%- assign meta_image_absolute = meta_image | absolute_url -%}
+{%- assign meta_url_absolute = page.url | replace:'index.html','' | absolute_url -%}
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Page Info -->
-  <title>{{ site.title }}</title>
+  <title>{{ meta_title | escape }}</title>
   <link rel="icon" type="image/png" href="/assets/icons/meta.png">
   <link rel="shortcut icon" type="image/png" href="/assets/icons/meta.png">
-  <meta name="description" content="Dust Wave's online shop">
+  <meta name="description" content="{{ meta_description | escape }}">
 
   <!-- iOS / Apple touch icons -->
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon-180.png">
@@ -16,27 +38,28 @@
   <link rel="apple-touch-icon-precomposed" href="/assets/icons/apple-touch-icon-152.png">
 
   <!-- Google / Search Engine Tags -->
-  <meta itemprop="name" content="DUST WAVE Shop">
-  <meta itemprop="description" content="Dust Wave's online shop">
-  <meta itemprop="image" content="/assets/icons/meta.png">
+  <meta itemprop="name" content="{{ meta_title | escape }}">
+  <meta itemprop="description" content="{{ meta_description | escape }}">
+  <meta itemprop="image" content="{{ meta_image_absolute }}">
 
 
 	<!-- Twitter Card -->
 	<meta name="twitter:card" content="summary_large_image">
-	<meta name="twitter:title" content="DUST WAVE Shop">
-	<meta name="twitter:description" content="Dust Wave's online shop">
-	<meta name="twitter:image:src" content="/assets/icons/meta.png">
+	<meta name="twitter:title" content="{{ meta_title | escape }}">
+	<meta name="twitter:description" content="{{ meta_description | escape }}">
+	<meta name="twitter:image" content="{{ meta_image_absolute }}">
+	<meta name="twitter:image:src" content="{{ meta_image_absolute }}">
 
 	<!-- Facebook OpenGraph -->
-  <meta property="og:url" content="https://shop.dustwave.xyz">
-  <meta property="og:type" content="website">
-	<meta property="og:title" content="DUST WAVE Shop" />
-	<meta property="og:description" content="Dust Wave's online shop" />
-	<meta property="og:image" content="/assets/icons/meta.png" />
+  <meta property="og:url" content="{{ meta_url_absolute }}">
+  <meta property="og:type" content="{{ og_type }}">
+	<meta property="og:title" content="{{ meta_title | escape }}" />
+	<meta property="og:description" content="{{ meta_description | escape }}" />
+	<meta property="og:image" content="{{ meta_image_absolute }}" />
 
 
   <link rel="stylesheet" href="{{ "/assets/main.css" | relative_url }}">
-  <link rel="canonical" href="{{ page.url | replace:'index.html','' | absolute_url }}">
+  <link rel="canonical" href="{{ meta_url_absolute }}">
   <link rel="alternate" type="application/rss+xml" title="{{ site.title | escape }}" href="{{ "/feed.xml" | relative_url }}">
 
   <script src="/assets/main.js" data-cfasync="false" type="text/javascript"></script>
